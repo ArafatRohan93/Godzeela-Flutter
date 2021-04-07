@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "677509161835",
+    "project_id": "godzeela-flutter",
+    "storage_bucket": "godzeela-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:677509161835:android:5b6d8343faeac58227a22e",
+        "android_client_info": {
+          "package_name": "com.rohanarafat.godzeela_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "677509161835-cvj72d4d0n51lbd3lmgeh1je452h162p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdxiy74b6CzK3ENReAcg2kAIZAPWrNF_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "677509161835-cvj72d4d0n51lbd3lmgeh1je452h162p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "677509161835-pt87vmoen4au5dqcki2bhtlogb1k3rg1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.rohanarafat.godzeela-flutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
