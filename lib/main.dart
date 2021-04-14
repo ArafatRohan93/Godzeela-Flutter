@@ -46,6 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
       theme: ThemeData(
         primaryColor: Colors.blue[800],
         accentColor: Colors.grey[700],
+        // scaffoldBackgroundColor: Colors.white,
       ),
       home: Home(),
     );

@@ -42,6 +42,7 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    PaintingBinding.instance.imageCache.clear();
     getCurrentUserData();
   }
 
@@ -56,6 +57,7 @@ class _HomeState extends State<Home> {
       try {
         DocumentSnapshot doc = await usersRef.doc(user.uid).get();
         userProfile = UserProfile.fromDocument(doc);
+        print(userProfile.photoURL);
       } catch (e) {
         print(e);
       }
