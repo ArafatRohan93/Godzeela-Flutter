@@ -17,19 +17,25 @@ class LogInSignUp extends StatelessWidget {
     @required this.onPressedGoogle,
     @required this.onPressedFacebook,
     @required this.fontName,
-    @required this.logoPath,
+    @required this.logoPath, 
+    this.onChangedConfirmPasswordField, 
+    @required this.needConfirm, 
+    @required this.errorMessage,
   });
 
   final String title;
   final bool rememberUser;
   final Function onChangedEmailField;
   final Function onChangedPasswordField;
+  final Function onChangedConfirmPasswordField;
   final Function onChangedCheckbox;
   final Function onPressedSubmit;
   final Function onPressedGoogle;
   final Function onPressedFacebook;
   final String fontName;
   final String logoPath;
+  final bool needConfirm;
+  final String errorMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +86,27 @@ class LogInSignUp extends StatelessWidget {
                 child: TextField(
                     obscureText: true,
                     onChanged: onChangedPasswordField,
-                    //  (value) {
-                    //   password = value;
-                    // },
                     decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Password', labelText: 'Password')),
               ),
+              needConfirm ? Column(
+                children: [
+                  SizedBox(
+                height: 20.0,
+              ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: TextField(
+                        obscureText: true,
+                        onChanged: onChangedConfirmPasswordField,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Confirm Password', labelText: 'Confirm Password')),
+                  ),
+                ],
+              ) : SizedBox(height: 0.0,),
               SizedBox(
                 height: 18.0,
+                child: errorMessage != null ?Text("$errorMessage", style: TextStyle(color: Colors.red),) : Text(""),
               ),
               Padding(
                 padding: EdgeInsets.only(left: 12.0, right: 12.0),
@@ -96,11 +115,6 @@ class LogInSignUp extends StatelessWidget {
                     Checkbox(
                       value: rememberUser,
                       onChanged: onChangedCheckbox,
-                      // (value) {
-                      //   setState(() {
-                      //     rememberUser = value;
-                      //   });
-                      // },
                     ),
                     Text('Remember me!'),
                     SizedBox(
@@ -117,7 +131,6 @@ class LogInSignUp extends StatelessWidget {
                           ),
                         ),
                         onPressed: onPressedSubmit,
-                        // () => loginWithEmailPassword(),
                       ),
                     ),
                   ],

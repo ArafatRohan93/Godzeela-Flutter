@@ -9,8 +9,8 @@ import 'package:godzeela_flutter/pages/user_home.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class CompleteRegistration extends StatefulWidget {
-  final UserCredential user;
-  CompleteRegistration({this.user});
+  final UserCredential userCredential;
+  CompleteRegistration({this.userCredential});
 
   @override
   _CompleteRegistrationState createState() => _CompleteRegistrationState();
@@ -129,17 +129,18 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                           child: RaisedButton(
                             onPressed: () {
                               try {
-                                usersRef.doc(widget.user.user.uid).set({
-                                  'id': widget.user.user.uid,
-                                  'email': widget.user.user.email,
+                                usersRef.doc(widget.userCredential.user.uid).set({
+                                  'id': widget.userCredential.user.uid,
+                                  'email': widget.userCredential.user.email,
                                   'username': username1,
-                                  'photoURL': widget.user.user.photoURL,
-                                  'displayname': widget.user.user.displayName,
+                                  'photoURL': widget.userCredential.user.photoURL,
+                                  'displayname': widget.userCredential.user.displayName,
                                   'profileURL' : "godzeela.com/$username1",
+                                  'linkSharing': true,
                                   'timestamp': timestamp,
                                 });
                                 setState(() {
-                                  currentUser = widget.user.user;
+                                  currentUser = widget.userCredential.user;
                                   SnackBar snackBar = SnackBar(
                                     content: Text("Registration Complete!"),
                                   );
