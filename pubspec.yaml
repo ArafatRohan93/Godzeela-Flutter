@@ -24,7 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   custom_switch: ^0.0.1
-  flutter_svg: ^0.18.0
+  flutter_svg: ^0.19.0
   google_sign_in: "^4.5.1"
   cloud_firestore: ^0.14.0
   image_picker: ^0.6.7+4
@@ -41,6 +41,7 @@ dependencies:
   path_provider: any
   flutter_launcher_icons: "^0.8.0"
   flutter_launcher_name: "^0.0.1"
+  qr_flutter: ^4.0.0
   
 
 
@@ -85,6 +86,9 @@ flutter:
         - asset: assets/fonts/PassionOne-Black.ttf
         - asset: assets/fonts/PassionOne-Bold.ttf
         - asset: assets/fonts/PassionOne-Regular.ttf
+    - family: QRIcon
+      fonts: 
+        - asset: assets/Icons/QRIcon.ttf
   assets:
     - assets/images/
   # To add assets to your application, add an assets section, like this:

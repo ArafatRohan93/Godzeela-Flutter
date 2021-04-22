@@ -7,8 +7,10 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:godzeela_flutter/components/appBar.dart';
 import 'package:godzeela_flutter/components/drawer.dart';
 import 'package:godzeela_flutter/components/progress.dart';
+import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
+import 'package:godzeela_flutter/pages/qr_view.dart';
 import 'package:godzeela_flutter/pages/user_home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -32,7 +34,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final _auth = FirebaseAuth.instance;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  PageController pageController;
+  PageController pageController = new PageController();
   int pageIndex = 0;
   bool sharingStatus = true;
   bool isAuth = false;
@@ -68,6 +70,7 @@ class _HomeState extends State<Home> {
   }
 
   onTap(int pageIndex) {
+    // print(pageIndex);
     print(auth);
     pageController.animateToPage(
       pageIndex,
@@ -85,7 +88,8 @@ class _HomeState extends State<Home> {
         children: <Widget>[
           UserHome(
             userProfile: userProfile,
-          ) 
+          ),
+          QRView(), 
           // ActivityFeed(),
           // Upload(currentUser : currentUser),
           // Search(),
@@ -107,7 +111,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.add_circle,
+              QRIcon.qr_code,
             ),
           ),
           BottomNavigationBarItem(
@@ -122,6 +126,7 @@ class _HomeState extends State<Home> {
 
   onPageChanged(int pageIndex) {
     setState(() {
+      // print(pageIndex);
       this.pageIndex = pageIndex;
     });
   }
