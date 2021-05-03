@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:godzeela_flutter/components/google_icon.dart';
 import 'package:godzeela_flutter/components/social_icons.dart';
 import 'package:godzeela_flutter/constants.dart';
+import 'package:godzeela_flutter/pages/forgot_password.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
 import 'package:godzeela_flutter/pages/signup_screen.dart';
 
@@ -241,8 +242,29 @@ class LogInSignUp extends StatelessWidget {
                         ),
                       ),
                     ),
+                    
                   ],
                 ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  ForgotPassword()));
+                          
+                        },
+                        child: Text(
+                          "Forgot Password",
+                          style: TextStyle(
+                            fontSize: 15.0,
+                            color: Colors.blue,
+                            fontFamily: fontName,
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,10 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:godzeela_flutter/components/appBar.dart';
 import 'package:godzeela_flutter/components/drawer.dart';
+import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
+import 'package:godzeela_flutter/components/nfc_icon_icons.dart';
 import 'package:godzeela_flutter/components/progress.dart';
 import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
+import 'package:godzeela_flutter/pages/nfc_sharing.dart';
 import 'package:godzeela_flutter/pages/qr_view.dart';
 import 'package:godzeela_flutter/pages/user_home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -21,9 +25,9 @@ final usersRef = FirebaseFirestore.instance.collection('users');
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final DateTime timestamp = DateTime.now();
 User currentUser;
-UserProfile userProfile = UserProfile(username: " ",linkSharing: true);
+UserProfile userProfile = UserProfile(username: " ", linkSharing: true);
 final FacebookLogin facebookSignIn = new FacebookLogin();
-final String textFont = 'PassionOne';
+
 class Home extends StatefulWidget {
   Home({Key key}) : super(key: key);
 
@@ -89,35 +93,56 @@ class _HomeState extends State<Home> {
           UserHome(
             userProfile: userProfile,
           ),
-          QRView(), 
-          // ActivityFeed(),
-          // Upload(currentUser : currentUser),
-          // Search(),
-          // Profile(profileId: currentUser?.id,),
+          QRView(),
+          NfcSharing(),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: NeverScrollableScrollPhysics(),
       ),
-      bottomNavigationBar: CupertinoTabBar(
-        currentIndex: pageIndex,
-        onTap: onTap,
-        activeColor: Theme.of(context).primaryColor,
-        items: [
-          BottomNavigationBarItem(
+      bottomNavigationBar: BottomNavyBar(
+        backgroundColor: Colors.black,
+        selectedIndex: pageIndex,
+        showElevation: true,
+        itemCornerRadius: 24,
+        curve: Curves.easeIn,
+        onItemSelected: onTap,
+        items: <BottomNavyBarItem>[
+          BottomNavyBarItem(
             icon: Icon(
-              Icons.person,
+              DrawerIcons.home,
+              color: Colors.white,
             ),
+            title: Text(
+              'Home',
+              style: TextStyle(color: Colors.white),
+            ),
+            activeColor: Colors.white70,
+            textAlign: TextAlign.center,
           ),
-          BottomNavigationBarItem(
+          BottomNavyBarItem(
             icon: Icon(
               QRIcon.qr_code,
+              color: Colors.white,
             ),
+            title: Text(
+              'QR Code',
+              style: TextStyle(color: Colors.white),
+            ),
+            activeColor: Colors.white70,
+            textAlign: TextAlign.center,
           ),
-          BottomNavigationBarItem(
+          BottomNavyBarItem(
             icon: Icon(
-              Icons.send,
+              NfcIcon.nfc,
+              color: Colors.white,
             ),
+            title: Text(
+              'NFC Sharing',
+              style: TextStyle(color: Colors.white),
+            ),
+            activeColor: Colors.white70,
+            textAlign: TextAlign.center,
           ),
         ],
       ),

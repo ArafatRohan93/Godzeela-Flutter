@@ -6,6 +6,9 @@ import 'package:godzeela_flutter/components/login_signup_form.dart';
 import 'package:godzeela_flutter/pages/complete_registration.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import '../constants.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -160,31 +163,34 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: LogInSignUp(
-            needConfirm: false,
-            errorMessage: errorMessage,
-            logoPath: "assets/images/godzilla_logo.svg",
-            fontName: "PassionOne",
-            title: "Log In",
-            rememberUser: rememberUser,
-            onChangedCheckbox: (value) {
-              setState(() {
-                rememberUser = value;
-              });
-            },
-            onChangedEmailField: (value) {
-              email = value;
-            },
-            onChangedPasswordField: (value) {
-              password = value;
-            },
-            onPressedFacebook: () => signInWithFacebook(),
-            onPressedGoogle: () => signInWithGoogle(),
-            onPressedSubmit: () => loginWithEmailPassword(),
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+          child: Scaffold(
+        body: Container(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: LogInSignUp(
+              needConfirm: false,
+              errorMessage: errorMessage,
+              logoPath: "assets/images/godzilla_logo.svg",
+              fontName: textFont,
+              title: "Log In",
+              rememberUser: rememberUser,
+              onChangedCheckbox: (value) {
+                setState(() {
+                  rememberUser = value;
+                });
+              },
+              onChangedEmailField: (value) {
+                email = value;
+              },
+              onChangedPasswordField: (value) {
+                password = value;
+              },
+              onPressedFacebook: () => signInWithFacebook(),
+              onPressedGoogle: () => signInWithGoogle(),
+              onPressedSubmit: () => loginWithEmailPassword(),
+            ),
           ),
         ),
       ),

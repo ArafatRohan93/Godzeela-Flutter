@@ -5,6 +5,9 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:godzeela_flutter/components/login_signup_form.dart';
 import 'package:godzeela_flutter/pages/complete_registration.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+
+import '../constants.dart';
 
 // final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -150,34 +153,37 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
-          child: LogInSignUp(
-            errorMessage: errorMessage,
-            needConfirm: true,
-            fontName: 'PassionOne',
-            logoPath: 'assets/images/godzilla_logo.svg',
-            onChangedCheckbox: (value) {
-              setState(() {
-                rememberUser = value;
-              });
-            },
-            onChangedEmailField: (value) {
-              email = value;
-            },
-            onChangedPasswordField: (value) {
-              password = value;
-            },
-            onChangedConfirmPasswordField: (value) {
-              confirmPassword = value;
-            },
-            onPressedSubmit: () => signUpUsingEmailPassword(),
-            onPressedFacebook: () => signInWithFacebook(),
-            onPressedGoogle: () => signInWithGoogle(),
-            rememberUser: rememberUser,
-            title: 'Sign Up',
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+          child: Scaffold(
+        body: Container(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: LogInSignUp(
+              errorMessage: errorMessage,
+              needConfirm: true,
+              fontName: textFont,
+              logoPath: 'assets/images/godzilla_logo.svg',
+              onChangedCheckbox: (value) {
+                setState(() {
+                  rememberUser = value;
+                });
+              },
+              onChangedEmailField: (value) {
+                email = value;
+              },
+              onChangedPasswordField: (value) {
+                password = value;
+              },
+              onChangedConfirmPasswordField: (value) {
+                confirmPassword = value;
+              },
+              onPressedSubmit: () => signUpUsingEmailPassword(),
+              onPressedFacebook: () => signInWithFacebook(),
+              onPressedGoogle: () => signInWithGoogle(),
+              rememberUser: rememberUser,
+              title: 'Sign Up',
+            ),
           ),
         ),
       ),

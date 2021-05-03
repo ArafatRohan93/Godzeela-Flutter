@@ -77,7 +77,7 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                           padding: const EdgeInsets.all(15.0),
                           child: Form(
                             key: _formKey,
-                            autovalidate: true,
+                            autovalidateMode: AutovalidateMode.always,
                             child: TextFormField(
                               validator: (val) {
                                 if (val.indexOf(' ') >= 0 ||
@@ -109,12 +109,10 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                             Expanded(
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
-                                child: GestureDetector(
-                                  child: Center(
-                                    child: Text(
-                                      'godzeela.com/$username1',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
+                                child: Center(
+                                  child: Text(
+                                    'godzeela.com/$username1',
+                                    style: TextStyle(color: Colors.black),
                                   ),
                                 ),
                               ),
@@ -126,7 +124,7 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                         ),
                         Padding(
                           padding: EdgeInsets.all(15.0),
-                          child: RaisedButton(
+                          child: ElevatedButton(
                             onPressed: () {
                               try {
                                 usersRef.doc(widget.userCredential.user.uid).set({
@@ -144,8 +142,7 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                   SnackBar snackBar = SnackBar(
                                     content: Text("Registration Complete!"),
                                   );
-                                  _scaffoldKey.currentState
-                                      .showSnackBar(snackBar);
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                                   Timer(Duration(seconds: 2), () {
                                     Navigator.push(
                                         context,
@@ -165,7 +162,17 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            color: Colors.black,
+                            style:ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(
+                          EdgeInsets.all(13)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                              side: BorderSide(color: Colors.black)))),
                           ),
                         ),
                       ],

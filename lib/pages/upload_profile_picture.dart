@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:godzeela_flutter/components/progress.dart';
+import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:image/image.dart' as Im;
@@ -50,35 +51,43 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    
     focusUploadImage.dispose();
     focusSelectImage.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: isUploading,
-          child: Scaffold(
+      child: Scaffold(
           appBar: AppBar(
+            iconTheme: IconThemeData(
+      color: Colors.black,
+      size: 40.0,
+    ),
+            centerTitle: true,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            elevation: 1.0,
-            title: Text("Change Avatar",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black, fontSize: 30.0, fontFamily: textFont)),
+            elevation: 0.0,
+            title: Text(
+              "Change Avatar",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25.0,
+                fontFamily: textFont,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           body: Center(
-            child:
-                _image == null ? Text('No image selected.') : Image.file(_image),
+            child: _image == null
+                ? Text('No image selected.')
+                : Image.file(_image),
           ),
           floatingActionButton: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              mainAxisAlignment:MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -88,58 +97,32 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
                     backgroundColor: Theme.of(context).primaryColor,
                     onPressed: getImage,
                     tooltip: 'Pick Image',
-                    child: Icon(Icons.add_a_photo,),
+                    child: Icon(
+                      Icons.add_a_photo,
+                    ),
                   ),
                 ),
-               _image == null
-                      ? SizedBox(
-                          height: 0,
-                          width: 0,
-                        )
-                      : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: 
-                      FloatingActionButton(
-                        heroTag: "UploadImageBtn",
-                        autofocus: true,
-                        backgroundColor: Theme.of(context).primaryColor,
+                _image == null
+                    ? SizedBox(
+                        height: 0,
+                        width: 0,
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FloatingActionButton(
+                          heroTag: "UploadImageBtn",
+                          autofocus: true,
+                          backgroundColor: Theme.of(context).primaryColor,
                           tooltip: 'Upload',
                           child: Icon(Icons.file_upload),
                           onPressed: isUploading ? null : () => handleSubmit(),
                         ),
-                ),
+                      ),
               ],
             ),
           )),
     );
   }
-  // body: SingleChildScrollView(
-  //   child: Column(
-  //     children: [
-  //       isUploading ? linearProgress() : Text(""),
-  //       Expanded(
-  //         child: Center(
-  //           child: Image.file(file),
-  //         ),
-  //       ),
-  //       Center(
-  //         child: Padding(
-  //           padding: EdgeInsets.all(8.0),
-  //           child: RaisedButton(
-  //             child: Text(
-  //               "Upload",
-  //               style: TextStyle(color: Colors.white),
-  //             ),
-  //             color: Colors.black,
-  //             onPressed: isUploading ? null : () => handleSubmit(),
-  //           ),
-  //         ),
-  //       ),
-  //     ],
-  //   ),
-  // ),
-  //   );
-  // }
 
   handleSubmit() async {
     setState(() {

@@ -14,10 +14,11 @@ class UserProfile{
   final String bio;
   final String facebookLink;
   final String twitterLink;
-  final String mediumLink;
+  final String twitchLink;
   final String instagramLink;
   final String pinterestLink;
-  final String githubLink;
+  final String snapchatLink;
+  final String tiktokLink;
   final String youtubeLink;
   final String linkedinLink;
   final String phoneNo;
@@ -28,7 +29,7 @@ class UserProfile{
   final String workEmail;
 
 
-  UserProfile({this.personalEmail,this.workEmail,this.fullName,this.personalWebsiteLink,this.facebookLink, this.twitterLink, this.mediumLink, this.instagramLink, this.pinterestLink, this.githubLink, this.youtubeLink, this.linkedinLink, this.phoneNo, this.workplace,this.linkSharing, this.bio,this.id,this.photoURL,this.username, this.profileURL, this.email, this.displayName});
+  UserProfile({this.personalEmail,this.workEmail,this.fullName,this.personalWebsiteLink,this.facebookLink, this.twitterLink, this.twitchLink, this.instagramLink, this.pinterestLink, this.snapchatLink, this.youtubeLink, this.linkedinLink, this.phoneNo, this.workplace,this.linkSharing, this.bio,this.id,this.photoURL,this.username, this.profileURL, this.email, this.displayName, this.tiktokLink});
 
   factory UserProfile.fromDocument(DocumentSnapshot doc){
     return UserProfile(
@@ -41,10 +42,10 @@ class UserProfile{
       linkSharing : doc.data()["linkSharing"],
       bio: doc.data()["bio"],
       facebookLink: doc.data()["facebookLink"],
-      githubLink: doc.data()["githubLink"],
+      snapchatLink: doc.data()["snapchatLink"],
       instagramLink: doc.data()["instagramLink"],
       linkedinLink: doc.data()["linkedinLink"],
-      mediumLink: doc.data()["mediumLink"],
+      twitchLink: doc.data()["twitchLink"],
       phoneNo: doc.data()["phoneNo"],
       pinterestLink: doc.data()["pinterestLink"],
       twitterLink: doc.data()["twitterLink"],
@@ -53,7 +54,8 @@ class UserProfile{
       personalWebsiteLink: doc.data()["personalWebsiteLink"],
       fullName: doc.data()["fullName"],
       personalEmail: doc.data()["personalEmail"],
-      workEmail: doc.data()["workEmail"]
+      workEmail: doc.data()["workEmail"],
+      tiktokLink: doc.data()["tiktokLink"]
     );
   }
 }

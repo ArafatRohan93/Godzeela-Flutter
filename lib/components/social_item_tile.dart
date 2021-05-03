@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/view_popup.dart';
@@ -23,77 +24,77 @@ class SocialItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // border: Border.all(
-          //   width: 1.0,
-          // ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3), // changes position of shadow
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: ListTile(
-                leading: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Icon(
-                      iconData,
-                      size: 30.0,
-                    ),
-                    Text(
-                      "$title",
-                      style: TextStyle(fontSize: 15.0, fontFamily: textFont),
-                    ),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.edit,
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        // border: Border.all(
+        //   width: 1.0,
+        // ),
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: Colors.grey.withOpacity(0.3),
+        //     spreadRadius: 5,
+        //     blurRadius: 7,
+        //     offset: Offset(0, 3), // changes position of shadow
+        //   ),
+        // ],
+      ),
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: ListTile(
+              leading: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  iconData == null ? SvgPicture.asset(
+                  "assets/images/${title.toLowerCase()}.svg",
+                  width: 35,
+                  height: 35,
+                ):Icon(
+                    iconData,
+                    size: 30.0,
                     color: Theme.of(context).primaryColor,
                   ),
-                  onPressed: () => this.focusNode.requestFocus(),
+                  Text(
+                    "$title",
+                    style: TextStyle(fontSize: 15.0, fontFamily: textFont,fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+              trailing: IconButton(
+                icon: Icon(
+                  Icons.edit,
+                  color: Theme.of(context).primaryColor,
                 ),
+                onPressed: () => this.focusNode.requestFocus(),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListTile(
-                title: TextField(
-                  focusNode: focusNode,
-                  controller: TextEditingController()..text = '$initialText',
-                  onChanged: onEditField,
-                  decoration:
-                      kTextFieldDecoration.copyWith(labelText: "$labelText"),
-                ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ListTile(
+              title: TextField(
+                focusNode: focusNode,
+                controller: TextEditingController()..text = '$initialText',
+                onChanged: onEditField,
+                decoration:
+                    kTextFieldDecoration.copyWith(labelText: "$labelText"),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class SocialItemGridTile extends StatelessWidget {
-  final IconData iconData;
   final String title;
   final bool activate;
   final String link;
   SocialItemGridTile({
     this.title,
-    this.iconData,
     this.activate,
     this.link,
   });
@@ -101,13 +102,13 @@ class SocialItemGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
-        onTap: (){
-          
+        onTap: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) =>  ViewPopUp(title: title, link: link != null ? link : "No Link available!"),
+            builder: (context) => ViewPopUp(
+                title: title, link: link != null ? link : "No Link available!"),
           );
         },
         child: Stack(
@@ -115,7 +116,6 @@ class SocialItemGridTile extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
                   color: Theme.of(context).scaffoldBackgroundColor,
                   // borderRadius: BorderRadius.all(Radius.circular(30.0)),
                   border: Border.all(
@@ -124,6 +124,7 @@ class SocialItemGridTile extends StatelessWidget {
                         : Colors.white,
                     width: 2.0,
                   ),
+                  borderRadius: BorderRadius.circular(10.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
@@ -135,36 +136,26 @@ class SocialItemGridTile extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(10.0),
                 child: CircleAvatar(
-                  radius: 50.0,
+                  radius: 45.0,
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  child: Icon(
-                    iconData,
-                    size: 50.0,
-                    color: Theme.of(context).accentColor,
+                  child: SvgPicture.asset(
+                    "assets/images/${title.toLowerCase()}.svg",
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: MediaQuery.of(context).size.width * 0.2,
                   ),
                 ),
-                // child: Column(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     Icon(
-                //       iconData,
-                //       size: 50,
-                //     ),
-                //     // Text(title),
-                //   ],
-                // ),
               ),
             ),
-            activate
-                ? Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Icon(
-                      Icons.check_circle,
-                      color: Theme.of(context).primaryColor,
-                      size: 15.0,
-                    ),
-                  )
-                : Text(""),
+            // activate
+            //     ? Padding(
+            //         padding: const EdgeInsets.all(8.0),
+            //         child: Icon(
+            //           Icons.check_circle,
+            //           color: Theme.of(context).primaryColor,
+            //           size: 15.0,
+            //         ),
+            //       )
+            //     : Text(""),
           ],
         ),
       ),

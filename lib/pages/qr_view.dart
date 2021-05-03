@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
+import 'package:flutter/services.dart';
+import 'package:godzeela_flutter/constants.dart';
+import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:async';
@@ -14,40 +16,98 @@ class QRView extends StatefulWidget {
 }
 
 class _QRViewState extends State<QRView> {
-
-static const double _topSectionTopPadding = 50.0;
-  static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 50.0;
-
   GlobalKey globalKey = new GlobalKey();
-  String _dataString = "Hello from this QR";
-  String _inputErrorText;
-  final TextEditingController _textController =  TextEditingController();
+
+  copyToClipboard(String data) {
+    Clipboard.setData(new ClipboardData(text: data));
+    ScaffoldMessenger.of(context).showSnackBar(
+      new SnackBar(
+        content: new Text("Copied to Clipboard"),
+      ),
+    );
+  }
 
   _contentWidget() {
-    final bodyHeight = MediaQuery.of(context).size.height - MediaQuery.of(context).viewInsets.bottom;
-    return  Container(
+    final bodyHeight = MediaQuery.of(context).size.height -
+        MediaQuery.of(context).viewInsets.bottom;
+    return Container(
       color: const Color(0xFFFFFFFF),
-      child:  Column(
+      child: Column(
         children: <Widget>[
-        
           Expanded(
-            child:  Center(
+            child: Center(
               child: RepaintBoundary(
                 key: globalKey,
                 child: QrImage(
-                  embeddedImage: CachedNetworkImageProvider(userProfile.photoURL),
+                  // embeddedImage:
+                  //     CachedNetworkImageProvider(userProfile.photoURL),
                   version: QrVersions.auto,
                   data: "${userProfile.profileURL}",
-                  size: 0.4 * bodyHeight,
-                  // onErrorBuilder: (ex) {
-                  //   print("[QR] ERROR - $ex");
-                  //   setState((){
-                  //     _inputErrorText = "Error! Maybe your input value is too long?";
-                  //   });
-                  // },
+                  size: 0.3 * bodyHeight,
+                  errorStateBuilder: (cxt, err) {
+                    return Container(
+                      child: Center(
+                        child: Text(
+                          "Uh oh! Something went wrong...",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
+            ),
+          ),
+           Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Center(
+              child: Text(
+                userProfile.profileURL,
+               style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: textFont,
+                    ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () => copyToClipboard(userProfile.profileURL),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.link,
+                      color: Colors.white,
+                      size: 35.0,
+                    ),
+                  ),
+                  Text(
+                    "Copy Link",
+                    style: TextStyle(
+                      fontFamily: textFont,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ],
+              ),
+              style: ButtonStyle(
+                  padding:
+                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                          side: BorderSide(color: Colors.black)))),
             ),
           ),
         ],
@@ -58,9 +118,11 @@ static const double _topSectionTopPadding = 50.0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       body: SafeArea(
-         child: _contentWidget(),
-       ),
+      body: SafeArea(
+          child: Padding(
+        padding: EdgeInsets.all(8.0),
+        child: _contentWidget(),
+      )),
     );
   }
 }

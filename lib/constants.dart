@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:godzeela_flutter/pages/home.dart';
+
+const String textFont = "DMSans";
 
 const kLabelTextStyle = TextStyle(
   fontSize: 18.0,
@@ -33,7 +36,8 @@ const kTextFieldDecoration = InputDecoration(
   labelText: '',
   // errorStyle: TextStyle(color: Colors.black),
   // errorBorder:  OutlineInputBorder(borderSide: BorderSide(color: Colors.black,width: 1.0,)),
-  labelStyle: TextStyle(color: Colors.black54, fontSize: 16.0),
+  labelStyle: TextStyle(color: Colors.black54, fontSize: 16.0,fontFamily: textFont),
+  hintStyle: TextStyle(color: Colors.black54, fontSize: 16.0,fontFamily: textFont),
   contentPadding:
   EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(

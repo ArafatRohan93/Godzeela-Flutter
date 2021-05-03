@@ -1,64 +1,168 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
+import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
+import 'package:godzeela_flutter/pages/edit_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
 
+import '../constants.dart';
+
 Drawer buildDrawer(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        // Important: Remove any padding from the ListView.
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          DrawerHeader(
-            child: Container(
-              height: 150.0,
-              child: SvgPicture.asset(
-                'assets/images/godzilla_logo.svg',
-                //height: orientation == Orientation.portrait ?  300.0 : 200.0 ,
-              ),
+ final double fontSize = 20;
+ final double iconSize = 35;
+  return Drawer(
+    child: ListView(
+      // Important: Remove any padding from the ListView.
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        SizedBox(height: 50.0),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+              title: Center(
+                  child: Text(
+            "${userProfile.username}",
+            style: TextStyle(
+              fontSize: 25.0,
+              fontFamily: textFont,
+              fontWeight: FontWeight.bold,
+            ),
+          ))),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            title: FlutterSwitch(
+              onToggle: (value) {},
+              value: userProfile.linkSharing == null
+                  ? false
+                  : userProfile.linkSharing,
+              activeColor: Colors.black,
+              activeText: "Profile On",
+              inactiveText: "Profile Off",
+              activeTextColor: Colors.white,
+              inactiveTextColor: Colors.black,
+              inactiveColor: Colors.white,
+              inactiveToggleColor: Colors.black,
+              inactiveSwitchBorder: Border.all(color: Colors.black, width: 3.0),
+              activeSwitchBorder: Border.all(color: Colors.white, width: 3.0),
+              width: 150.0,
+              height: 50.0,
+              valueFontSize: 15.0,
+              toggleSize: 50.0,
+              borderRadius: 30.0,
+              padding: 8.0,
+              showOnOff: true,
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.link),
-            title: Text('Profile Link'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+              DrawerIcons.home,
+              size: iconSize,
+            ),
+            title: Text(
+              'Home',
+              style: TextStyle(
+                fontFamily: textFont,
+                fontSize: fontSize,
+              ),
+            ),
+            onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>Home()));
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+              DrawerIcons.user_edit,
+              size: iconSize,
+            ),
+            title: Text(
+              'Edit Profile',
+              style: TextStyle(
+                fontFamily: textFont,
+                fontSize: fontSize,
+              ),
+            ),
+           onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+              DrawerIcons.wrench_outline,
+              size: iconSize,
+            ),
+            title: Text(
+              'Set up your device',
+              style: TextStyle(
+                fontFamily: textFont,
+                fontSize: fontSize,
+              ),
+            ),
             onTap: () {
               // Update the state of the app.
               // ...
             },
           ),
-          ListTile(
-            leading: Icon(Icons.add_circle_outline),
-            title: Text('Add Links'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+              DrawerIcons.help,
+              size: iconSize,
+            ),
+            title: Text(
+              'How to use',
+              style: TextStyle(
+                fontFamily: textFont,
+                fontSize: fontSize,
+              ),
+            ),
             onTap: () {
               // Update the state of the app.
               // ...
             },
           ),
-          ListTile(
-            leading: Icon(Icons.share),
-            title: Text('Share'),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListTile(
+            leading: Icon(
+             DrawerIcons.logout,
+              size: iconSize,
+            ),
+            title: Text(
+              'Logout',
+              style: TextStyle(
+                fontFamily: textFont,
+                fontSize: fontSize,
+              ),
+            ),
             onTap: () {
-              // Update the state of the app.
-              // ...
-            },
-          ),
-          ListTile(
-            leading: Icon(Icons.remove_circle_outline),
-            title: Text('Logout'),
-            onTap: () {
-              // Update the state of the app.
-              // ...
               currentUser = null;
               auth.signOut();
               googleSignIn.signOut();
               FacebookAuth.instance.logOut();
               //setState(() {
-                Navigator.push(context,MaterialPageRoute(builder: (context) => LoginScreen()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()));
               //});
             },
           ),
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  );
 }

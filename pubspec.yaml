@@ -42,12 +42,18 @@ dependencies:
   flutter_launcher_icons: "^0.8.0"
   flutter_launcher_name: "^0.0.1"
   qr_flutter: ^4.0.0
+  badges: ^1.2.0
+  nfc_in_flutter: 2.0.0
   
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.3
+  url_launcher: ^6.0.3
+  animated_splash_screen: ^1.1.0
+  page_transition: ^2.0.1-nullsafety.0
+  bottom_navy_bar: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -81,14 +87,40 @@ flutter:
     - family: GoogleIcon
       fonts:
         - asset: assets/Icons/GoogleIcon.ttf
+    - family: NfcIcon
+      fonts:
+        - asset: assets/Icons/NfcIcon.ttf
     - family: PassionOne
       fonts:
         - asset: assets/fonts/PassionOne-Black.ttf
         - asset: assets/fonts/PassionOne-Bold.ttf
         - asset: assets/fonts/PassionOne-Regular.ttf
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/Montserrat-Black.ttf
+        - asset: assets/fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/Montserrat-Regular.ttf
+        - asset: assets/fonts/Montserrat-Medium.ttf
+        - asset: assets/fonts/Montserrat-Italic.ttf
+        - asset: assets/fonts/Montserrat-ThinItalic.ttf
+
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans-Bold.ttf
+        - asset: assets/fonts/DMSans-Regular.ttf
+        - asset: assets/fonts/DMSans-Medium.ttf
+    - family: NotoSansJP
+      fonts:
+        - asset: assets/fonts/NotoSansJP-Black.otf
+        - asset: assets/fonts/NotoSansJP-Bold.otf
+        - asset: assets/fonts/NotoSansJP-Regular.otf
+        - asset: assets/fonts/NotoSansJP-Medium.otf
     - family: QRIcon
       fonts: 
         - asset: assets/Icons/QRIcon.ttf
+    - family: DrawerIcons
+      fonts:
+        - asset: assets/Icons/DrawerIcons.ttf
   assets:
     - assets/images/
   # To add assets to your application, add an assets section, like this:

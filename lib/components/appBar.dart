@@ -1,47 +1,33 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:godzeela_flutter/pages/edit_profile.dart';
-import 'package:godzeela_flutter/pages/home.dart';
 
 AppBar buildAppBar(BuildContext context) {
   return AppBar(
+    centerTitle: true,
     elevation: 0,
     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     iconTheme: IconThemeData(
-      color: Theme.of(context).primaryColor,
-      size: 35.0,
+      color: Colors.black,
+      size: 40.0,
     ),
     title: Center(
       child: SvgPicture.asset(
         'assets/images/godzilla_logo.svg',
+        width: 200,
+        height: 70,
       ),
     ),
     actions: [
       Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: GestureDetector(
-          onTap: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context)=> EditProfile())).then((value){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> Home(),));
-            });
-          },
-          child: Container(
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'Edit Profile',
-                  style: TextStyle(color: Colors.black,fontFamily: 'PassionOne',fontSize: 18),
-                ),
-              ),
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ),
-      ),
+          padding: const EdgeInsets.only(right: 15.0, left: 8.0, top: 8.0, bottom: 8.0),
+          child: Badge(
+            position: BadgePosition.topStart(),
+            badgeContent: Text('0',style: TextStyle(color: Colors.white),),
+            child: Icon(Icons.notifications_active_outlined,color: Colors.black,),
+            badgeColor: Colors.red,
+            
+          )),
     ],
   );
 }
