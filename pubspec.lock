@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0"
+  app_settings:
+    dependency: "direct main"
+    description:
+      name: app_settings
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.1.0"
   archive:
     dependency: transitive
     description:
@@ -29,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0"
+  auto_size_text:
+    dependency: "direct main"
+    description:
+      name: auto_size_text
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
   badges:
     dependency: "direct main"
     description:
@@ -251,6 +265,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
+  flutter_nfc_reader:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "3038b2d522cbdface9a7459cd7467a90d7dda77a"
+      url: "git://github.com/matteocrippa/flutter-nfc-reader.git"
+    source: git
+    version: "0.1.2"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

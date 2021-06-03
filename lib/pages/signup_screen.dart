@@ -35,8 +35,8 @@ class _SignupScreenState extends State<SignupScreen> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .catchError((error) {
           setState(() {
-              errorMessage = error.code;
-            });
+            errorMessage = error.code;
+          });
         });
         if (userCredential != null) {
           print(userCredential.user);
@@ -47,16 +47,16 @@ class _SignupScreenState extends State<SignupScreen> {
                         userCredential: userCredential,
                       )));
         }
-        
+
         setState(() {
           showSpinner = false;
         });
       } on PlatformException catch (e) {
-      setState(() {
-        errorMessage = e.code;
-      });
-      print(e);
-    }
+        setState(() {
+          errorMessage = e.code;
+        });
+        print(e);
+      }
     } else {
       setState(() {
         errorMessage = "Passwords did not match!";
@@ -71,8 +71,8 @@ class _SignupScreenState extends State<SignupScreen> {
       googleUser = await GoogleSignIn().signIn();
     } catch (e) {
       setState(() {
-              errorMessage = e.code;
-            });
+        errorMessage = e.code;
+      });
       return null;
     }
 
@@ -91,8 +91,8 @@ class _SignupScreenState extends State<SignupScreen> {
       final userCredential =
           await _auth.signInWithCredential(credential).catchError((error) {
         setState(() {
-              errorMessage = error.code;
-            });
+          errorMessage = error.code;
+        });
       });
 
       if (userCredential != null) {
@@ -109,8 +109,8 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     } catch (e) {
       setState(() {
-              errorMessage = e.code;
-            });
+        errorMessage = e.code;
+      });
       print(e);
     }
   }
@@ -130,8 +130,8 @@ class _SignupScreenState extends State<SignupScreen> {
           .signInWithCredential(facebookAuthCredential)
           .catchError((error) {
         setState(() {
-              errorMessage = error.code;
-            });
+          errorMessage = error.code;
+        });
       });
 
       if (userCredential != null) {
@@ -155,7 +155,7 @@ class _SignupScreenState extends State<SignupScreen> {
   Widget build(BuildContext context) {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
-          child: Scaffold(
+      child: Scaffold(
         body: Container(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),

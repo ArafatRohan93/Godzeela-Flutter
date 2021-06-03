@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:godzeela_flutter/components/chips.dart';
 import 'package:godzeela_flutter/components/social_icons.dart';
 import 'package:godzeela_flutter/components/social_item_tile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
@@ -72,8 +74,8 @@ class _UserHomeState extends State<UserHome> {
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 5,
-                        blurRadius: 7,
+                        spreadRadius: 2,
+                        blurRadius: 5,
                         offset: Offset(0, 3), // changes position of shadow
                       ),
                     ],
@@ -92,96 +94,74 @@ class _UserHomeState extends State<UserHome> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.all(4.0),
-                child: GestureDetector(
-                  onDoubleTap: () => launchURL("https://www.godzeela.com"),
-                  onLongPress: () => copyToClipboard("https://www.godzeela.com"),
+              Chips(
+                  icon: Icon(Icons.link_rounded),
+                  widget: GestureDetector(
+                  onDoubleTap: () =>
+                launchURL("https://godzeela-flutter.web.app/#/profile/${userProfile.id}"),
+                  onLongPress: () =>
+                copyToClipboard("https://godzeela-flutter.web.app/#/profile/${userProfile.id}"),
                   child: Text(
-                    "${widget.userProfile.profileURL}",
-                    style: TextStyle(
-                      fontSize: 15.0,
-                      color: Colors.black54,
-                      fontWeight: FontWeight.w300,
-                      fontFamily: textFont,
-                    ),
+                  "godzeela.../${widget.userProfile.id}",
+                  style: TextStyle(
+                fontSize: 15.0,
+                color: Colors.black54,
+                fontWeight: FontWeight.w300,
+                fontFamily: textFont,
                   ),
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: userProfile.linkSharing
-                              ? Text(
-                                  "Direct on",
-                                  style: TextStyle(
-                                      fontFamily: textFont,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              : Text(
-                                  "Direct off",
-                                  style: TextStyle(
-                                      fontFamily: textFont,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(13)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      side: BorderSide(color: Colors.black)))),
+                ),
+                ),
+                widget.userProfile.fullName == '' || widget.userProfile.fullName == null
+                   ? Text(
+                 "",
+                    )
+                   :Chips(
+                   icon: Icon(Icons.person),
+                   widget:  Text(
+                 "${widget.userProfile.fullName}",
+                 style: TextStyle(
+              fontSize: 15.0,
+              color: Colors.black54,
+              fontWeight: FontWeight.w300,
+              fontFamily: textFont,
+                 ),
+                    ),
+                 ),
+                   widget.userProfile.phoneNo == '' || widget.userProfile.phoneNo == null
+                    ? Text(
+                   "",
+                 )
+                    : Chips(
+                 icon: Icon(Icons.phone_android_rounded),
+                 widget:    Text(
+                   "${widget.userProfile.phoneNo}",
+                   style: TextStyle(
+                     fontSize: 15.0,
+                     color: Colors.black54,
+                     fontWeight: FontWeight.w300,
+                     fontFamily: textFont,
+                   ),
+                 ),
+                    ),
+                widget.userProfile.personalEmail == '' || widget.userProfile.personalEmail == null
+                    ? Text(
+                        "",
+                      ):Chips(
+                  icon: Icon(Icons.email_rounded),
+                  widget:Text(
+                        "${widget.userProfile.personalEmail}",
+                        style: TextStyle(
+                          fontSize: 15.0,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w300,
+                          fontFamily: textFont,
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditProfile()));
-                          },
-                          child: Text(
-                            "Edit Profile",
-                            style: TextStyle(
-                                fontFamily: textFont,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          style: ButtonStyle(
-                              padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(13)),
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.black),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      side: BorderSide(color: Colors.black)))),
-                        ),
-                      ),
-                    ),
-                  ],
                 ),
-              ),
+              
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,

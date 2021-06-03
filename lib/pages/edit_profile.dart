@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:godzeela_flutter/components/social_item_tile.dart';
+import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/upload_profile_picture.dart';
@@ -22,7 +23,11 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   File file;
-  bool sharingStatus = userProfile.linkSharing;
+  bool sharingStatus =
+      isBusiness ? businessProfile.linkSharing : userProfile.linkSharing;
+  TimeOfDay initialTime = TimeOfDay.now();
+  TimeOfDay pickedTime;
+  String openingTime = isBusiness ? businessProfile.openingTime : "";
   FocusNode bioFocusNode,
       fbFocusNode,
       instaFocusNode,
@@ -38,25 +43,41 @@ class _EditProfileState extends State<EditProfile> {
       pEmailFocus,
       wEmailFocus,
       wPlaceFocus,
-      tiktokFocus;
-  String bio = userProfile.bio;
+      tiktokFocus,
+      openingTimeFocus;
   bool isLoading = false;
-  String facebookLink = userProfile.facebookLink;
-  String twitterLink = userProfile.twitterLink;
-  String snapchatLink = userProfile.snapchatLink;
-  String instagramLink = userProfile.instagramLink;
-  String pinterestLink = userProfile.pinterestLink;
-  String twitchLink = userProfile.twitchLink;
-  String youtubeLink = userProfile.youtubeLink;
-  String linkedinLink = userProfile.linkedinLink;
-  String phoneNo = userProfile.phoneNo;
-  String workplace = userProfile.workplace;
-  String personalWebsiteLink = userProfile.personalWebsiteLink;
-  String fullName = userProfile.fullName;
+  String bio = isBusiness ? businessProfile.bio : userProfile.bio;
+  String facebookLink =
+      isBusiness ? businessProfile.facebookLink : userProfile.facebookLink;
+  String twitterLink =
+      isBusiness ? businessProfile.twitterLink : userProfile.twitterLink;
+  String snapchatLink =
+      isBusiness ? businessProfile.snapchatLink : userProfile.snapchatLink;
+  String instagramLink =
+      isBusiness ? businessProfile.instagramLink : userProfile.instagramLink;
+  String pinterestLink =
+      isBusiness ? businessProfile.pinterestLink : userProfile.pinterestLink;
+  String twitchLink =
+      isBusiness ? businessProfile.twitchLink : userProfile.twitchLink;
+  String youtubeLink =
+      isBusiness ? businessProfile.youtubeLink : userProfile.youtubeLink;
+  String linkedinLink =
+      isBusiness ? businessProfile.linkedinLink : userProfile.linkedinLink;
+  String phoneNo = isBusiness ? businessProfile.phoneNo : userProfile.phoneNo;
+  String workplace =
+      isBusiness ? businessProfile.address : userProfile.workplace;
+  String personalWebsiteLink = isBusiness
+      ? businessProfile.businessWebsiteLink
+      : userProfile.personalWebsiteLink;
+  String fullName =
+      isBusiness ? businessProfile.businessName : userProfile.fullName;
   String personalEmail = userProfile.personalEmail;
-  String workEmail = userProfile.workEmail;
-  String tiktokLink = userProfile.tiktokLink;
-  var photoURL;
+  String workEmail =
+      isBusiness ? businessProfile.businessEmail : userProfile.workEmail;
+  String tiktokLink =
+      isBusiness ? businessProfile.tiktokLink : userProfile.tiktokLink;
+  String photoURL =
+      isBusiness ? businessProfile.photoURL : userProfile.photoURL;
 
   @override
   void initState() {
@@ -78,6 +99,7 @@ class _EditProfileState extends State<EditProfile> {
     wEmailFocus = FocusNode();
     wPlaceFocus = FocusNode();
     tiktokFocus = FocusNode();
+    openingTimeFocus = FocusNode();
   }
 
   @override
@@ -99,6 +121,7 @@ class _EditProfileState extends State<EditProfile> {
     wEmailFocus.dispose();
     wPlaceFocus.dispose();
     tiktokFocus.dispose();
+    openingTimeFocus.dispose();
 
     super.dispose();
   }
@@ -113,9 +136,9 @@ class _EditProfileState extends State<EditProfile> {
         child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-      color: Colors.black,
-      size: 40.0,
-    ),
+              color: Colors.black,
+              size: 40.0,
+            ),
             backgroundColor: Colors.white,
             elevation: 0.0,
             centerTitle: true,
@@ -186,10 +209,9 @@ class _EditProfileState extends State<EditProfile> {
                                         radius: 50.0,
                                         backgroundColor: Theme.of(context)
                                             .scaffoldBackgroundColor,
-                                        backgroundImage: userProfile.photoURL !=
-                                                null
+                                        backgroundImage: photoURL != null
                                             ? CachedNetworkImageProvider(
-                                                userProfile.photoURL)
+                                                photoURL)
                                             : AssetImage(
                                                 'assets/images/dummyProfile.png'),
                                       ),
@@ -334,13 +356,18 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           bottom: TabBar(
                             labelColor: Theme.of(context).primaryColor,
-                            labelStyle: TextStyle(fontFamily: textFont,fontSize: 20.0,),
+                            labelStyle: TextStyle(
+                              fontFamily: textFont,
+                              fontSize: 20.0,
+                            ),
                             unselectedLabelColor: Theme.of(context).accentColor,
                             indicatorColor: Theme.of(context).primaryColor,
                             tabs: [
                               Tab(
                                 // icon: Icon(Icons.directions_bike),
-                                text: "Personal Info",
+                                text: isBusiness
+                                    ? "Business Info"
+                                    : "Personal Info",
                               ),
                               Tab(
                                 // icon: Icon(Icons.directions_car,
@@ -356,7 +383,9 @@ class _EditProfileState extends State<EditProfile> {
                         children: [
                           // first tab bar view widget
                           SingleChildScrollView(
-                            child: buildEditPersonalInfo(),
+                            child: isBusiness
+                                ? buildEditBusinessInfo()
+                                : buildEditPersonalInfo(),
                           ),
                           // second tab bar viiew widget
                           SingleChildScrollView(
@@ -385,41 +414,84 @@ class _EditProfileState extends State<EditProfile> {
               setState(() {
                 isLoading = true;
               });
-              try {
-                usersRef.doc(userProfile.id).update({
-                  "bio": bio,
-                  "linkSharing": sharingStatus,
-                  "facebookLink": facebookLink,
-                  "twitterLink": twitterLink,
-                  "snapchatLink": snapchatLink,
-                  "instagramLink": instagramLink,
-                  "pinterestLink": pinterestLink,
-                  "twitchLink": twitchLink,
-                  "youtubeLink": youtubeLink,
-                  "linkedinLink": linkedinLink,
-                  "phoneNo": phoneNo,
-                  "workplace": workplace,
-                  "personalWebsiteLink": personalWebsiteLink,
-                  "fullName": fullName,
-                  "personalEmail": personalEmail,
-                  "workEmail": workEmail,
-                  "tiktokLink": tiktokLink,
-                });
-
+              if (isBusiness) {
                 try {
-                  DocumentSnapshot doc =
-                      await usersRef.doc(currentUser.uid).get();
-                  userProfile = UserProfile.fromDocument(doc);
+                  usersRef.doc(businessProfile.id).update({
+                    "bio": bio,
+                    "linkSharing": sharingStatus,
+                    "facebookLink": facebookLink,
+                    "twitterLink": twitterLink,
+                    "snapchatLink": snapchatLink,
+                    "instagramLink": instagramLink,
+                    "pinterestLink": pinterestLink,
+                    "twitchLink": twitchLink,
+                    "youtubeLink": youtubeLink,
+                    "linkedinLink": linkedinLink,
+                    "phoneNo": phoneNo,
+                    "address": workplace,
+                    "businessName": fullName,
+                    "businessEmail": workEmail,
+                    "businessWebsiteLink":personalWebsiteLink,
+                    "openingTime": openingTime,
+                    "tiktokLink": tiktokLink,
+                    "profileURL":
+                        "https://godzeela-flutter.web.app/#/profile/${businessProfile.id}",
+                  });
+
+                  try {
+                    DocumentSnapshot doc =
+                        await usersRef.doc(currentUser.uid).get();
+                    businessProfile = BusinessProfile.fromDocument(doc);
+                  } catch (e) {
+                    print(e);
+                  }
+                  setState(() {
+                    isLoading = false;
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Home()));
+                  });
                 } catch (e) {
                   print(e);
                 }
-                setState(() {
-                  isLoading = false;
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => Home()));
-                });
-              } catch (e) {
-                print(e);
+              } else {
+                try {
+                  usersRef.doc(userProfile.id).update({
+                    "bio": bio,
+                    "linkSharing": sharingStatus,
+                    "facebookLink": facebookLink,
+                    "twitterLink": twitterLink,
+                    "snapchatLink": snapchatLink,
+                    "instagramLink": instagramLink,
+                    "pinterestLink": pinterestLink,
+                    "twitchLink": twitchLink,
+                    "youtubeLink": youtubeLink,
+                    "linkedinLink": linkedinLink,
+                    "phoneNo": phoneNo,
+                    "workplace": workplace,
+                    "personalWebsiteLink": personalWebsiteLink,
+                    "fullName": fullName,
+                    "personalEmail": personalEmail,
+                    "workEmail": workEmail,
+                    "tiktokLink": tiktokLink,
+                    "profileURL":
+                        "https://godzeela-flutter.web.app/#/profile/${userProfile.id}",
+                  });
+
+                  try {
+                    DocumentSnapshot doc =
+                        await usersRef.doc(currentUser.uid).get();
+                    userProfile = UserProfile.fromDocument(doc);
+                  } catch (e) {
+                    print(e);
+                  }
+                  setState(() {
+                    isLoading = false;
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Home()));
+                  });
+                } catch (e) {
+                  print(e);
+                }
               }
             },
           ),
@@ -650,6 +722,134 @@ class _EditProfileState extends State<EditProfile> {
               labelText: "Enter Website Link",
               onEditField: (value) => personalWebsiteLink = value,
               onPressEdit: () => pWebFocus.requestFocus(),
+            ),
+            SizedBox(
+              height: 5.0,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding buildEditBusinessInfo() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(15.0),
+            bottomRight: Radius.circular(15.0),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            SocialItemTile(
+              focusNode: fullNameFocus,
+              title: "Full Business Name",
+              iconData: Icons.business,
+              initialText: fullName == null ? "" : fullName,
+              labelText: "Enter Full Business Name",
+              onEditField: (value) => fullName = value,
+              onPressEdit: () => fullNameFocus.requestFocus(),
+            ),
+            SocialItemTile(
+              focusNode: wPlaceFocus,
+              title: "Address",
+              iconData: Icons.pin_drop,
+              initialText: workplace == null ? "" : workplace,
+              labelText: "Enter Address",
+              onEditField: (value) => workplace = value,
+              onPressEdit: () => wPlaceFocus.requestFocus(),
+            ),
+            SocialItemTile(
+              focusNode: wEmailFocus,
+              title: "Business Email",
+              iconData: Icons.email,
+              initialText: workEmail == null ? "" : workEmail,
+              labelText: "Enter Business Email",
+              onEditField: (value) => workEmail = value,
+              onPressEdit: () => wEmailFocus.requestFocus(),
+            ),
+            SocialItemTile(
+              focusNode: phoneFocus,
+              title: "Phone Number",
+              iconData: Icons.phone,
+              initialText: phoneNo == null ? "" : phoneNo,
+              labelText: "Enter Phone No.",
+              onEditField: (value) => phoneNo = value,
+              onPressEdit: () => phoneFocus.requestFocus(),
+            ),
+            SocialItemTile(
+              focusNode: pWebFocus,
+              title: "Business Website",
+              iconData: Icons.link,
+              initialText:
+                  personalWebsiteLink == null ? "" : personalWebsiteLink,
+              labelText: "Enter Website Link",
+              onEditField: (value) => personalWebsiteLink = value,
+              onPressEdit: () => pWebFocus.requestFocus(),
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.transparent,
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: ListTile(
+                      leading: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.av_timer,
+                            size: 30.0,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          Text(
+                            "Opening Time",
+                            style: TextStyle(
+                                fontSize: 15.0,
+                                fontFamily: textFont,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.edit,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                        onPressed: () async {
+                          pickedTime = await showTimePicker(
+                            context: context,
+                            initialTime: initialTime,
+                          );
+                          setState(() {
+                            openingTime = "${pickedTime.format(context)}";
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ListTile(
+                      title: Text(openingTime != "" ? openingTime : "Not set!",textAlign: TextAlign.center,),
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(
               height: 5.0,

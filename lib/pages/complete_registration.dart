@@ -16,11 +16,15 @@ class CompleteRegistration extends StatefulWidget {
   _CompleteRegistrationState createState() => _CompleteRegistrationState();
 }
 
+enum AccountType { personal, business }
+
 class _CompleteRegistrationState extends State<CompleteRegistration> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   String username;
   String username1 = '';
+  AccountType accountType = AccountType.personal;
+  List<String> acc = ["Personal", "Business"];
 
   @override
   Widget build(BuildContext context) {
@@ -29,22 +33,22 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
       body: SafeArea(
         child: Container(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(15.0),
             child: ListView(
               children: [
                 Container(
-                  height: 200.0,
+                  height: 100.0,
                   child: SvgPicture.asset(
                     'assets/images/godzilla_logo.svg',
                   ),
                 ),
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.black,
-                      width: 2.0,
-                    ),
-                  ),
+                      // border: Border.all(
+                      //   color: Colors.black,
+                      //   width: 2.0,
+                      // ),
+                      ),
                   child: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Column(
@@ -59,6 +63,50 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                 fontSize: 35.0,
                                 fontWeight: FontWeight.w500),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Text(
+                            'Select account type:',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w300),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: Radio(
+                              value: AccountType.personal,
+                              groupValue: accountType,
+                              onChanged: (AccountType value) {
+                                setState(() {
+                                  accountType = value;
+                                  print(accountType.toString());
+                                });
+                              },
+                            ),
+                            title: Text("Personal"),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: ListTile(
+                            leading: Radio(
+                              value: AccountType.business,
+                              groupValue: accountType,
+                              onChanged: (AccountType value) {
+                                setState(() {
+                                  accountType = value;
+                                });
+                              },
+                            ),
+                            title: Text("Business"),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
                         ),
                         Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -104,21 +152,21 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                         SizedBox(
                           height: 20.0,
                         ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.all(2.0),
-                                child: Center(
-                                  child: Text(
-                                    'godzeela.com/$username1',
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                        // Row(
+                        //   children: [
+                        //     Expanded(
+                        //       child: Padding(
+                        //         padding: const EdgeInsets.all(2.0),
+                        //         child: Center(
+                        //           child: Text(
+                        //             'godzeela.com/$username1',
+                        //             style: TextStyle(color: Colors.black),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
                         SizedBox(
                           height: 20.0,
                         ),
@@ -126,32 +174,55 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                           padding: EdgeInsets.all(15.0),
                           child: ElevatedButton(
                             onPressed: () {
-                              try {
-                                usersRef.doc(widget.userCredential.user.uid).set({
-                                  'id': widget.userCredential.user.uid,
-                                  'email': widget.userCredential.user.email,
-                                  'username': username1,
-                                  'photoURL': widget.userCredential.user.photoURL,
-                                  'displayname': widget.userCredential.user.displayName,
-                                  'profileURL' : "godzeela.com/$username1",
-                                  'linkSharing': true,
-                                  'timestamp': timestamp,
-                                });
-                                setState(() {
-                                  currentUser = widget.userCredential.user;
-                                  SnackBar snackBar = SnackBar(
-                                    content: Text("Registration Complete!"),
-                                  );
-                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                                  Timer(Duration(seconds: 2), () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Home()));
+                              if (username1.length >= 3) {
+                                try {
+                                  usersRef
+                                      .doc(widget.userCredential.user.uid)
+                                      .set({
+                                    'id': widget.userCredential.user.uid,
+                                    'email': widget.userCredential.user.email,
+                                    'username': username1,
+                                    'photoURL':
+                                        widget.userCredential.user.photoURL,
+                                    'displayname':
+                                        widget.userCredential.user.displayName,
+                                    'profileURL': "godzeela.com/$username1",
+                                    'linkSharing': true,
+                                    'timestamp': timestamp,
+                                    'accountType': acc[accountType.index],
+                                    'profileURL' : "https://godzeela-flutter.web.app/#/profile/${widget.userCredential.user.uid}",
                                   });
-                                });
-                              } catch (e) {
-                                print(e);
+                                  setState(() {
+                                    currentUser = widget.userCredential.user;
+                                    SnackBar snackBar = SnackBar(
+                                      content: Text("Registration Complete!"),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                    Timer(Duration(seconds: 2), () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Home()));
+                                    });
+                                  });
+                                } catch (e) {
+                                  print(e);
+                                }
+                              }
+                              else{
+                               SnackBar snackBar = SnackBar(
+                                      content: Text("Username is not valid!"),
+                                    );
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                    // Timer(Duration(seconds: 2), () {
+                                    //   Navigator.push(
+                                    //       context,
+                                    //       MaterialPageRoute(
+                                    //           builder: (context) => Home()));
+                                    // });
+
                               }
                             },
                             child: Text(
@@ -162,17 +233,22 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            style:ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(
-                          EdgeInsets.all(13)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              side: BorderSide(color: Colors.black)))),
+                            style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(13)),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.black),
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.white),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        side:
+                                            BorderSide(color: Colors.black)))),
                           ),
                         ),
                       ],

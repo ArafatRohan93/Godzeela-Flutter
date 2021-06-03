@@ -1,8 +1,10 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
+import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/pages/edit_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
@@ -12,6 +14,8 @@ import '../constants.dart';
 Drawer buildDrawer(BuildContext context) {
  final double fontSize = 20;
  final double iconSize = 35;
+ bool toogle = isBusiness ? businessProfile.linkSharing : userProfile.linkSharing;
+ String title = isBusiness ? businessProfile.username : userProfile.username;
   return Drawer(
     child: ListView(
       // Important: Remove any padding from the ListView.
@@ -23,7 +27,7 @@ Drawer buildDrawer(BuildContext context) {
           child: ListTile(
               title: Center(
                   child: Text(
-            "${userProfile.username}",
+            title != null ? title : " ",
             style: TextStyle(
               fontSize: 25.0,
               fontFamily: textFont,
@@ -35,10 +39,22 @@ Drawer buildDrawer(BuildContext context) {
           padding: const EdgeInsets.all(8.0),
           child: ListTile(
             title: FlutterSwitch(
-              onToggle: (value) {},
-              value: userProfile.linkSharing == null
-                  ? false
-                  : userProfile.linkSharing,
+              onToggle: (value) {
+                toogle = value;
+                if(isBusiness){
+                  usersRef.doc(businessProfile.id).update({
+                    "linkSharing" : toogle,
+                  });
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home()));
+                }
+                else{
+                  usersRef.doc(userProfile.id).update({
+                    "linkSharing" : toogle,
+                  });
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> Home()));
+                }
+              },
+              value: toogle != null ? toogle : false,
               activeColor: Colors.black,
               activeText: "Profile On",
               inactiveText: "Profile Off",
@@ -111,8 +127,7 @@ Drawer buildDrawer(BuildContext context) {
               ),
             ),
             onTap: () {
-              // Update the state of the app.
-              // ...
+             AppSettings.openNFCSettings();
             },
           ),
         ),
@@ -155,6 +170,8 @@ Drawer buildDrawer(BuildContext context) {
               auth.signOut();
               googleSignIn.signOut();
               FacebookAuth.instance.logOut();
+              userProfile = null;
+              businessProfile = null;
               //setState(() {
               Navigator.pushReplacement(context,
                   MaterialPageRoute(builder: (context) => LoginScreen()));

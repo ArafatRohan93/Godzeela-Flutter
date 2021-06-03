@@ -27,17 +27,6 @@ class SocialItemTile extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,
-        // border: Border.all(
-        //   width: 1.0,
-        // ),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: Colors.grey.withOpacity(0.3),
-        //     spreadRadius: 5,
-        //     blurRadius: 7,
-        //     offset: Offset(0, 3), // changes position of shadow
-        //   ),
-        // ],
       ),
       child: Column(
         children: [

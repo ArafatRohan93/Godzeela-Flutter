@@ -22,8 +22,8 @@ AppBar buildAppBar(BuildContext context) {
       Padding(
           padding: const EdgeInsets.only(right: 15.0, left: 8.0, top: 8.0, bottom: 8.0),
           child: Badge(
-            position: BadgePosition.topStart(),
-            badgeContent: Text('0',style: TextStyle(color: Colors.white),),
+            // position: BadgePosition.topStart(),
+            // badgeContent: Text('0',style: TextStyle(color: Colors.white),),
             child: Icon(Icons.notifications_active_outlined,color: Colors.black,),
             badgeColor: Colors.red,
             

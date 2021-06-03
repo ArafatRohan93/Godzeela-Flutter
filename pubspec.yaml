@@ -44,6 +44,11 @@ dependencies:
   qr_flutter: ^4.0.0
   badges: ^1.2.0
   nfc_in_flutter: 2.0.0
+  app_settings: 4.1.0
+  flutter_nfc_reader:
+    git:
+      url: git://github.com/matteocrippa/flutter-nfc-reader.git
+      ref: master
   
 
 
@@ -54,6 +59,7 @@ dependencies:
   animated_splash_screen: ^1.1.0
   page_transition: ^2.0.1-nullsafety.0
   bottom_navy_bar: ^6.0.0
+  auto_size_text: ^2.1.0
 
 dev_dependencies:
   flutter_test:

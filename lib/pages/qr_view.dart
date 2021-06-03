@@ -42,7 +42,7 @@ class _QRViewState extends State<QRView> {
                   // embeddedImage:
                   //     CachedNetworkImageProvider(userProfile.photoURL),
                   version: QrVersions.auto,
-                  data: "${userProfile.profileURL}",
+                  data: isBusiness ? "${businessProfile.profileURL}":"${userProfile.profileURL}",
                   size: 0.3 * bodyHeight,
                   errorStateBuilder: (cxt, err) {
                     return Container(
@@ -59,10 +59,11 @@ class _QRViewState extends State<QRView> {
             ),
           ),
            Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(5.0),
             child: Center(
               child: Text(
-                userProfile.profileURL,
+               isBusiness ? "${businessProfile.profileURL}":"${userProfile.profileURL}",
+               overflow: TextOverflow.ellipsis,
                style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.black54,
@@ -75,7 +76,7 @@ class _QRViewState extends State<QRView> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ElevatedButton(
-              onPressed: () => copyToClipboard(userProfile.profileURL),
+              onPressed: () => copyToClipboard(isBusiness ? businessProfile.profileURL : userProfile.profileURL),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

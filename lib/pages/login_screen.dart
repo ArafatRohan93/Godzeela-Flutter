@@ -168,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Scaffold(
         body: Container(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: LogInSignUp(
               needConfirm: false,
               errorMessage: errorMessage,

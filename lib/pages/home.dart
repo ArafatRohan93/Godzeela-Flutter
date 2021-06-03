@@ -11,7 +11,9 @@ import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
 import 'package:godzeela_flutter/components/nfc_icon_icons.dart';
 import 'package:godzeela_flutter/components/progress.dart';
 import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
+import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
+import 'package:godzeela_flutter/pages/business_home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
 import 'package:godzeela_flutter/pages/nfc_sharing.dart';
 import 'package:godzeela_flutter/pages/qr_view.dart';
@@ -26,6 +28,8 @@ final StorageReference storageRef = FirebaseStorage.instance.ref();
 final DateTime timestamp = DateTime.now();
 User currentUser;
 UserProfile userProfile = UserProfile(username: " ", linkSharing: true);
+BusinessProfile businessProfile = BusinessProfile(username: " ",linkSharing: true);
+bool isBusiness = false;
 final FacebookLogin facebookSignIn = new FacebookLogin();
 
 class Home extends StatefulWidget {
@@ -62,8 +66,14 @@ class _HomeState extends State<Home> {
       });
       try {
         DocumentSnapshot doc = await usersRef.doc(user.uid).get();
+        isBusiness  = doc.data()['accountType'] == 'Business';
+        if(isBusiness){
+        businessProfile = BusinessProfile.fromDocument(doc);
+        }
+        else{
         userProfile = UserProfile.fromDocument(doc);
         print(userProfile.photoURL);
+        }
       } catch (e) {
         print(e);
       }
@@ -90,7 +100,7 @@ class _HomeState extends State<Home> {
       appBar: buildAppBar(context),
       body: PageView(
         children: <Widget>[
-          UserHome(
+          isBusiness ? BusinessHome(businessProfile: businessProfile,) : UserHome(
             userProfile: userProfile,
           ),
           QRView(),
