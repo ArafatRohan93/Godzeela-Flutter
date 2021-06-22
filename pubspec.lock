@@ -269,11 +269,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: master
-      resolved-ref: "3038b2d522cbdface9a7459cd7467a90d7dda77a"
+      ref: develop
+      resolved-ref: "888b03c7158440959d660dca26ee8951c84263c6"
       url: "git://github.com/matteocrippa/flutter-nfc-reader.git"
     source: git
-    version: "0.1.2"
+    version: "0.1.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -403,6 +403,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  nfc_manager:
+    dependency: "direct main"
+    description:
+      name: nfc_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   octo_image:
     dependency: transitive
     description:

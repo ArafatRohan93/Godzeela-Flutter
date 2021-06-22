@@ -24,7 +24,7 @@ AppBar buildAppBar(BuildContext context) {
           child: Badge(
             // position: BadgePosition.topStart(),
             // badgeContent: Text('0',style: TextStyle(color: Colors.white),),
-            child: Icon(Icons.notifications_active_outlined,color: Colors.black,),
+            child: Icon(Icons.notifications_active_outlined,color: Colors.black,size: 25.0,),
             badgeColor: Colors.red,
             
           )),

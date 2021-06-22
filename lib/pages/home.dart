@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:godzeela_flutter/components/appBar.dart';
 import 'package:godzeela_flutter/components/drawer.dart';
 import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
@@ -15,6 +16,7 @@ import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/business_home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
+import 'package:godzeela_flutter/pages/nfc_scan.dart';
 import 'package:godzeela_flutter/pages/nfc_sharing.dart';
 import 'package:godzeela_flutter/pages/qr_view.dart';
 import 'package:godzeela_flutter/pages/user_home.dart';
@@ -28,7 +30,8 @@ final StorageReference storageRef = FirebaseStorage.instance.ref();
 final DateTime timestamp = DateTime.now();
 User currentUser;
 UserProfile userProfile = UserProfile(username: " ", linkSharing: true);
-BusinessProfile businessProfile = BusinessProfile(username: " ",linkSharing: true);
+BusinessProfile businessProfile =
+    BusinessProfile(username: " ", linkSharing: true);
 bool isBusiness = false;
 final FacebookLogin facebookSignIn = new FacebookLogin();
 
@@ -47,6 +50,16 @@ class _HomeState extends State<Home> {
   bool sharingStatus = true;
   bool isAuth = false;
   bool isLoading = false;
+  FlutterNfcReader flutterNfcReader = FlutterNfcReader(); 
+
+  //NFCAvailability available;
+
+  // checkNFCAvailability() async {
+  //   available = await FlutterNfcReader.checkNFCAvailability();
+  //   print("NFC AVAILABILTY : ${available.toString()}");
+  //   setState(() {});
+  // }
+
 
   @override
   void initState() {
@@ -54,6 +67,17 @@ class _HomeState extends State<Home> {
     super.initState();
     PaintingBinding.instance.imageCache.clear();
     getCurrentUserData();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   checkNFCAvailability();
+    // });
+
+    //writerController.text = 'Flutter NFC Scan';
+    // print("onTagDiscovered: \n");
+    // FlutterNfcReader.onTagDiscovered().listen((onData) {
+    //   print(onData.status);
+    //   print(onData.id);
+    //   print(onData.content);
+    // });
   }
 
   getCurrentUserData() async {
@@ -66,13 +90,12 @@ class _HomeState extends State<Home> {
       });
       try {
         DocumentSnapshot doc = await usersRef.doc(user.uid).get();
-        isBusiness  = doc.data()['accountType'] == 'Business';
-        if(isBusiness){
-        businessProfile = BusinessProfile.fromDocument(doc);
-        }
-        else{
-        userProfile = UserProfile.fromDocument(doc);
-        print(userProfile.photoURL);
+        isBusiness = doc.data()['accountType'] == 'Business';
+        if (isBusiness) {
+          businessProfile = BusinessProfile.fromDocument(doc);
+        } else {
+          userProfile = UserProfile.fromDocument(doc);
+          print(userProfile.photoURL);
         }
       } catch (e) {
         print(e);
@@ -96,15 +119,19 @@ class _HomeState extends State<Home> {
   Widget buildAuthScreen() {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: buildDrawer(context),
+      drawer: BuildDrawer(),
       appBar: buildAppBar(context),
       body: PageView(
         children: <Widget>[
-          isBusiness ? BusinessHome(businessProfile: businessProfile,) : UserHome(
-            userProfile: userProfile,
-          ),
+          isBusiness
+              ? BusinessHome(
+                  businessProfile: businessProfile,
+                )
+              : UserHome(
+                  userProfile: userProfile,
+                ),
           QRView(),
-          NfcSharing(),
+          NfcScan(),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,

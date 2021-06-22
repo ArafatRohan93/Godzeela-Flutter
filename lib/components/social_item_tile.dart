@@ -91,7 +91,7 @@ class SocialItemGridTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(left:12.0,right: 12.0,top:5.0,bottom:5.0 ),
       child: GestureDetector(
         onTap: () {
           showModalBottomSheet(
@@ -103,17 +103,19 @@ class SocialItemGridTile extends StatelessWidget {
         child: Stack(
           alignment: Alignment.topRight,
           children: [
+            
             Container(
               decoration: BoxDecoration(
+                // shape: BoxShape.circle,
                   color: Theme.of(context).scaffoldBackgroundColor,
-                  // borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
                   border: Border.all(
                     color: activate
                         ? Theme.of(context).primaryColor
                         : Colors.white,
                     width: 2.0,
                   ),
-                  borderRadius: BorderRadius.circular(10.0),
+                  // borderRadius: BorderRadius.circular(30.0),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey.withOpacity(0.3),
@@ -121,20 +123,28 @@ class SocialItemGridTile extends StatelessWidget {
                       blurRadius: 7,
                       offset: Offset(0, 3), // changes position of shadow
                     ),
-                  ]),
-              child: Padding(
-                padding: EdgeInsets.all(10.0),
-                child: CircleAvatar(
-                  radius: 45.0,
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  child: SvgPicture.asset(
-                    "assets/images/${title.toLowerCase()}.svg",
-                    width: MediaQuery.of(context).size.width * 0.2,
-                    height: MediaQuery.of(context).size.width * 0.2,
+                  ]
                   ),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 5.0,),
+                  Padding(
+                    padding: EdgeInsets.only(top:10.0,left: 10.0, right: 10.0, bottom: 5.0,),
+                    child: SvgPicture.asset(
+                      "assets/images/${title.toLowerCase()}.svg",
+                      width: 60,
+                      height: 60,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Center(child: FittedBox(child: Text(title),),),
+                  ),
+                ],
               ),
             ),
+            
             // activate
             //     ? Padding(
             //         padding: const EdgeInsets.all(8.0),

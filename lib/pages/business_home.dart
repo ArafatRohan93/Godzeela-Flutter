@@ -169,92 +169,101 @@ class _BusinessHomeState extends State<BusinessHome> {
                         ),
                       ),
                     ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Facebook",
-                      activate:
-                          businessProfile.facebookLink == null ? false : true,
-                      link: businessProfile.facebookLink,
+              Padding(
+                padding: EdgeInsets.only(left:20.0,right: 20.0,top:10.0,),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Facebook",
+                        activate:
+                            businessProfile.facebookLink == null ? false : true,
+                        link: businessProfile.facebookLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Instagram",
-                      activate:
-                          businessProfile.instagramLink == null ? false : true,
-                      link: businessProfile.instagramLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Instagram",
+                        activate:
+                            businessProfile.instagramLink == null ? false : true,
+                        link: businessProfile.instagramLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Twitter",
-                      activate:
-                          businessProfile.twitterLink == null ? false : true,
-                      link: businessProfile.twitterLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Twitter",
+                        activate:
+                            businessProfile.twitterLink == null ? false : true,
+                        link: businessProfile.twitterLink,
+                      ),
                     ),
-                  ),
-                  // Orientation.portrait == true ? Text(""):SizedBox(width:30.0),
-                ],
+                    // Orientation.portrait == true ? Text(""):SizedBox(width:30.0),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "LinkedIn",
-                      activate:
-                          businessProfile.linkedinLink == null ? false : true,
-                      link: businessProfile.linkedinLink,
+              Padding(
+                padding: EdgeInsets.only(left:20.0,right: 20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "LinkedIn",
+                        activate:
+                            businessProfile.linkedinLink == null ? false : true,
+                        link: businessProfile.linkedinLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "YouTube",
-                      activate:
-                          businessProfile.youtubeLink == null ? false : true,
-                      link: businessProfile.youtubeLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "YouTube",
+                        activate:
+                            businessProfile.youtubeLink == null ? false : true,
+                        link: businessProfile.youtubeLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Twitch",
-                      activate:
-                          businessProfile.twitchLink == null ? false : true,
-                      link: businessProfile.twitchLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Twitch",
+                        activate:
+                            businessProfile.twitchLink == null ? false : true,
+                        link: businessProfile.twitchLink,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Pinterest",
-                      activate:
-                          businessProfile.pinterestLink == null ? false : true,
-                      link: businessProfile.pinterestLink,
+              Padding(
+                padding: EdgeInsets.only(left:20.0,right: 20.0,bottom: 10.0,),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Pinterest",
+                        activate:
+                            businessProfile.pinterestLink == null ? false : true,
+                        link: businessProfile.pinterestLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "TikTok",
-                      activate:
-                          businessProfile.snapchatLink == null ? false : true,
-                      link: businessProfile.snapchatLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "TikTok",
+                        activate:
+                            businessProfile.snapchatLink == null ? false : true,
+                        link: businessProfile.snapchatLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Snapchat",
-                      activate:
-                          businessProfile.snapchatLink == null ? false : true,
-                      link: businessProfile.snapchatLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Snapchat",
+                        activate:
+                            businessProfile.snapchatLink == null ? false : true,
+                        link: businessProfile.snapchatLink,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

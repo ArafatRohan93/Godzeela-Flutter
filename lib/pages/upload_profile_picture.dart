@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:godzeela_flutter/components/progress.dart';
 import 'package:godzeela_flutter/constants.dart';
+import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:image/image.dart' as Im;
@@ -63,9 +64,9 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
       child: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(
-      color: Colors.black,
-      size: 40.0,
-    ),
+              color: Colors.black,
+              size: 40.0,
+            ),
             centerTitle: true,
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             elevation: 0.0,
@@ -132,26 +133,52 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
     String mediaUrl = await uploadImage(compressedFile);
 
     updateProfilePhoto(mediaUrl);
-    try {
-      DocumentSnapshot doc = await usersRef.doc(currentUser.uid).get();
-      userProfile = UserProfile.fromDocument(doc);
-    } catch (e) {
-      print(e);
+    if (isBusiness) {
+      try {
+        DocumentSnapshot doc = await usersRef.doc(currentUser.uid).get();
+        businessProfile = BusinessProfile.fromDocument(doc);
+      } catch (e) {
+        print(e);
+      }
+      print(businessProfile.photoURL);
+      setState(() {
+        isUploading = false;
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      });
+    } else {
+      try {
+        DocumentSnapshot doc = await usersRef.doc(currentUser.uid).get();
+        userProfile = UserProfile.fromDocument(doc);
+      } catch (e) {
+        print(e);
+      }
+      print(userProfile.photoURL);
+      setState(() {
+        isUploading = false;
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Home()));
+      });
     }
-    print(userProfile.photoURL);
-    setState(() {
-      isUploading = false;
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-    });
   }
 
   updateProfilePhoto(String url) {
-    try {
-      usersRef.doc(userProfile.id).update({
-        "photoURL": url,
-      });
-    } catch (e) {
-      print("Error updating photoURL : $e");
+    if (isBusiness) {
+      try {
+        usersRef.doc(businessProfile.id).update({
+          "photoURL": url,
+        });
+      } catch (e) {
+        print("Error updating photoURL : $e");
+      }
+    } else {
+      try {
+        usersRef.doc(userProfile.id).update({
+          "photoURL": url,
+        });
+      } catch (e) {
+        print("Error updating photoURL : $e");
+      }
     }
   }
 

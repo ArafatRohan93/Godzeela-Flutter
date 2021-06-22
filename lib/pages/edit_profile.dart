@@ -128,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final Orientation orientation = MediaQuery.of(context).orientation;
+    var orientation = MediaQuery.of(context).orientation;
     return ModalProgressHUD(
       inAsyncCall: isLoading,
       child: DefaultTabController(
@@ -151,261 +151,253 @@ class _EditProfileState extends State<EditProfile> {
                     fontWeight: FontWeight.bold)),
           ),
           body: ListView(
-            shrinkWrap: true,
-            children: [
-              Container(
-                height: orientation == Orientation.portrait
-                    ? MediaQuery.of(context).size.height * 1.2
-                    : MediaQuery.of(context).size.height * 1.6,
-                width: MediaQuery.of(context).size.width * 1,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(15.0),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.3),
-                              spreadRadius: 5,
-                              blurRadius: 7,
-                              offset:
-                                  Offset(0, 3), // changes position of shadow
-                            ),
-                          ],
+                      children:[ Container(
+              height: orientation == Orientation.portrait
+                  ? MediaQuery.of(context).size.height
+                  : MediaQuery.of(context).size.width*1.5,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15.0),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: new BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: new Border.all(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                    width: 6.0,
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3),
-                                      spreadRadius: 5,
-                                      blurRadius: 7,
-                                      offset: Offset(
-                                          0, 3), // changes position of shadow
-                                    ),
-                                  ],
-                                ),
-                                child: Center(
-                                  child: Stack(
-                                    alignment: Alignment.bottomRight,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 50.0,
-                                        backgroundColor: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        backgroundImage: photoURL != null
-                                            ? CachedNetworkImageProvider(
-                                                photoURL)
-                                            : AssetImage(
-                                                'assets/images/dummyProfile.png'),
-                                      ),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20.0)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.grey.withOpacity(0.3),
-                                              spreadRadius: 5,
-                                              blurRadius: 7,
-                                              offset: Offset(0,
-                                                  3), // changes position of shadow
-                                            ),
-                                          ],
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 20.0,
-                                          backgroundColor: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          child: IconButton(
-                                            onPressed: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        UploadProfilePicture())),
-                                            icon: Icon(
-                                              Icons.edit,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              ListTile(
-                                leading: Text(
-                                  "Bio",
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    fontFamily: textFont,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                title: TextField(
-                                  focusNode: bioFocusNode,
-                                  controller: TextEditingController()
-                                    ..text = bio,
-                                  onChanged: (value) => bio = value,
-                                  decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Edit Bio"),
-                                ),
-                                trailing: IconButton(
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 15.0,
-                                  ),
-                                  onPressed: () => bioFocusNode.requestFocus(),
-                                ),
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            flex: 3,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  "Sharing",
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                    fontFamily: textFont,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                Text(
-                                                  "Allow others to see you online.",
-                                                  style:
-                                                      TextStyle(fontSize: 13.0),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(2.0),
-                                              child: FlutterSwitch(
-                                                activeColor: Theme.of(context)
-                                                    .primaryColor,
-                                                value: sharingStatus,
-                                                onToggle: (value) {
-                                                  setState(() {
-                                                    sharingStatus = value;
-                                                    print(value);
-                                                  });
-                                                },
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          left: 8.0, right: 8.0, top: 8.0),
-                      child: SizedBox(
-                        height: 50,
-                        child: AppBar(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.0),
-                              topRight: Radius.circular(15.0),
-                            ),
-                          ),
-                          bottom: TabBar(
-                            labelColor: Theme.of(context).primaryColor,
-                            labelStyle: TextStyle(
-                              fontFamily: textFont,
-                              fontSize: 20.0,
-                            ),
-                            unselectedLabelColor: Theme.of(context).accentColor,
-                            indicatorColor: Theme.of(context).primaryColor,
-                            tabs: [
-                              Tab(
-                                // icon: Icon(Icons.directions_bike),
-                                text: isBusiness
-                                    ? "Business Info"
-                                    : "Personal Info",
-                              ),
-                              Tab(
-                                // icon: Icon(Icons.directions_car,
-                                text: "Social Info",
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TabBarView(
-                        children: [
-                          // first tab bar view widget
-                          SingleChildScrollView(
-                            child: isBusiness
-                                ? buildEditBusinessInfo()
-                                : buildEditPersonalInfo(),
-                          ),
-                          // second tab bar viiew widget
-                          SingleChildScrollView(
-                            child: buildEditSocialMediaInfo(),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset:
+                                Offset(0, 3), // changes position of shadow
                           ),
                         ],
                       ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: new BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: new Border.all(
+                                  color: Theme.of(context)
+                                      .scaffoldBackgroundColor,
+                                  width: 6.0,
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                child: Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 50.0,
+                                      backgroundColor: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      backgroundImage: photoURL != null
+                                          ? CachedNetworkImageProvider(
+                                              photoURL)
+                                          : AssetImage(
+                                              'assets/images/dummyProfile.png'),
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.grey.withOpacity(0.3),
+                                            spreadRadius: 5,
+                                            blurRadius: 7,
+                                            offset: Offset(0,
+                                                3), // changes position of shadow
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 20.0,
+                                        backgroundColor: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                        child: IconButton(
+                                          onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      UploadProfilePicture())),
+                                          icon: Icon(
+                                            Icons.edit,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            ListTile(
+                              leading: Text(
+                                "Bio",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  fontFamily: textFont,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              title: TextField(
+                                focusNode: bioFocusNode,
+                                controller: TextEditingController()
+                                  ..text = bio,
+                                onChanged: (value) => bio = value,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Edit Bio"),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 15.0,
+                                ),
+                                onPressed: () => bioFocusNode.requestFocus(),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          flex: 3,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Sharing",
+                                                style: TextStyle(
+                                                  fontSize: 15.0,
+                                                  fontFamily: textFont,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Allow others to see you online.",
+                                                style:
+                                                    TextStyle(fontSize: 13.0),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: EdgeInsets.all(2.0),
+                                            child: FlutterSwitch(
+                                              activeColor: Theme.of(context)
+                                                  .primaryColor,
+                                              value: sharingStatus,
+                                              onToggle: (value) {
+                                                setState(() {
+                                                  sharingStatus = value;
+                                                  print(value);
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(
-                      height: 20.0,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 8.0, right: 8.0, top: 8.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: AppBar(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15.0),
+                            topRight: Radius.circular(15.0),
+                          ),
+                        ),
+                        bottom: TabBar(
+                          labelColor: Theme.of(context).primaryColor,
+                          labelStyle: TextStyle(
+                            fontFamily: textFont,
+                            fontSize: 20.0,
+                          ),
+                          unselectedLabelColor: Theme.of(context).accentColor,
+                          indicatorColor: Theme.of(context).primaryColor,
+                          tabs: [
+                            Tab(
+                              // icon: Icon(Icons.directions_bike),
+                              text: isBusiness
+                                  ? "Business Info"
+                                  : "Personal Info",
+                            ),
+                            Tab(
+                              // icon: Icon(Icons.directions_car,
+                              text: "Social Info",
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                    SvgPicture.asset(
-                      "assets/images/godzilla_logo.svg",
-                      width: 150.0,
-                      height: 40,
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        // first tab bar view widget
+                        SingleChildScrollView(
+                          child: isBusiness
+                              ? buildEditBusinessInfo()
+                              : buildEditPersonalInfo(),
+                              physics: orientation != Orientation.portrait ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+                        ),
+                        // second tab bar viiew widget
+                        SingleChildScrollView(
+                          child: buildEditSocialMediaInfo(),
+                          physics: orientation != Orientation.portrait ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
+                      ],
           ),
           floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).primaryColor,

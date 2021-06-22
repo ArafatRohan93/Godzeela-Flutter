@@ -10,7 +10,7 @@ class UserProfile{
   final String id;
   final String profileURL;
   final String displayName;
-  final bool linkSharing;
+   bool linkSharing;
   final String bio;
   final String facebookLink;
   final String twitterLink;

@@ -81,11 +81,11 @@ class _QRViewState extends State<QRView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(5.0),
                     child: Icon(
                       Icons.link,
                       color: Colors.white,
-                      size: 35.0,
+                      size: 25.0,
                     ),
                   ),
                   Text(
@@ -93,22 +93,27 @@ class _QRViewState extends State<QRView> {
                     style: TextStyle(
                       fontFamily: textFont,
                       fontWeight: FontWeight.w500,
-                      fontSize: 20.0,
+                      fontSize: 15.0,
                     ),
                   ),
                 ],
               ),
-              style: ButtonStyle(
-                  padding:
-                      MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(5)),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          side: BorderSide(color: Colors.black)))),
+             style: ButtonStyle(
+                                    padding:
+                                        MaterialStateProperty.all<EdgeInsets>(
+                                            EdgeInsets.all(5)),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.black),
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.white),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            side: BorderSide(color: Colors.black)))),
             ),
           ),
         ],

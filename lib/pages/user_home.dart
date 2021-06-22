@@ -22,6 +22,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   bool sharingStatus = true;
+  
 
   launchURL(String url) async {
     try {
@@ -47,6 +48,7 @@ class _UserHomeState extends State<UserHome> {
 
   @override
   Widget build(BuildContext context) {
+    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -102,7 +104,7 @@ class _UserHomeState extends State<UserHome> {
                   onLongPress: () =>
                 copyToClipboard("https://godzeela-flutter.web.app/#/profile/${userProfile.id}"),
                   child: Text(
-                  "godzeela.../${widget.userProfile.id}",
+                  "godzeela-flutter.web.app/#/...",
                   style: TextStyle(
                 fontSize: 15.0,
                 color: Colors.black54,
@@ -162,85 +164,94 @@ class _UserHomeState extends State<UserHome> {
                       ),
                 ),
               
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Facebook",
-                      activate: userProfile.facebookLink == null ? false : true,
-                      link: userProfile.facebookLink,
+              Padding(
+                padding:  EdgeInsets.only(top: 10.0, left:20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Facebook",
+                        activate: userProfile.facebookLink == null ? false : true,
+                        link: userProfile.facebookLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Instagram",
-                      activate:
-                          userProfile.instagramLink == null ? false : true,
-                      link: userProfile.instagramLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Instagram",
+                        activate:
+                            userProfile.instagramLink == null ? false : true,
+                        link: userProfile.instagramLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Twitter",
-                      activate: userProfile.twitterLink == null ? false : true,
-                      link: userProfile.twitterLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Twitter",
+                        activate: userProfile.twitterLink == null ? false : true,
+                        link: userProfile.twitterLink,
+                      ),
                     ),
-                  ),
-                  // Orientation.portrait == true ? Text(""):SizedBox(width:30.0),
-                ],
+                    // Orientation.portrait == true ? Text(""):SizedBox(width:30.0),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "LinkedIn",
-                      activate: userProfile.linkedinLink == null ? false : true,
-                      link: userProfile.linkedinLink,
+              Padding(
+                padding:  EdgeInsets.only(left:20.0,right: 20.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "LinkedIn",
+                        activate: userProfile.linkedinLink == null ? false : true,
+                        link: userProfile.linkedinLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "YouTube",
-                      activate: userProfile.youtubeLink == null ? false : true,
-                      link: userProfile.youtubeLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "YouTube",
+                        activate: userProfile.youtubeLink == null ? false : true,
+                        link: userProfile.youtubeLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Twitch",
-                      activate: userProfile.twitchLink == null ? false : true,
-                      link: userProfile.twitchLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Twitch",
+                        activate: userProfile.twitchLink == null ? false : true,
+                        link: userProfile.twitchLink,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Pinterest",
-                      activate:
-                          userProfile.pinterestLink == null ? false : true,
-                      link: userProfile.pinterestLink,
+              Padding(
+                padding:  EdgeInsets.only(left:20.0, right: 20.0,bottom: 10.0, ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Pinterest",
+                        activate:
+                            userProfile.pinterestLink == null ? false : true,
+                        link: userProfile.pinterestLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "TikTok",
-                      activate: userProfile.snapchatLink == null ? false : true,
-                      link: userProfile.snapchatLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "TikTok",
+                        activate: userProfile.snapchatLink == null ? false : true,
+                        link: userProfile.snapchatLink,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    child: SocialItemGridTile(
-                      title: "Snapchat",
-                      activate: userProfile.snapchatLink == null ? false : true,
-                      link: userProfile.snapchatLink,
+                    Expanded(
+                      child: SocialItemGridTile(
+                        title: "Snapchat",
+                        activate: userProfile.snapchatLink == null ? false : true,
+                        link: userProfile.snapchatLink,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),

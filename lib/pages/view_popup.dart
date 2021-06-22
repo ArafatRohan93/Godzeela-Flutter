@@ -41,7 +41,7 @@ class _ViewPopUpState extends State<ViewPopUp> {
           ),
         ),
         child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
+          // physics: NeverScrollableScrollPhysics(),
           child: Padding(
             padding:
                 const EdgeInsets.symmetric(vertical: 30.0, horizontal: 30.0),
