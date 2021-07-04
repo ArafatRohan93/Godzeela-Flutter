@@ -27,9 +27,11 @@ class UserProfile{
   final String fullName;
   final String personalEmail;
   final String workEmail;
+  final String jobTitle;
+  final String address;
 
 
-  UserProfile({this.personalEmail,this.workEmail,this.fullName,this.personalWebsiteLink,this.facebookLink, this.twitterLink, this.twitchLink, this.instagramLink, this.pinterestLink, this.snapchatLink, this.youtubeLink, this.linkedinLink, this.phoneNo, this.workplace,this.linkSharing, this.bio,this.id,this.photoURL,this.username, this.profileURL, this.email, this.displayName, this.tiktokLink});
+  UserProfile({this.jobTitle, this.address,this.personalEmail,this.workEmail,this.fullName,this.personalWebsiteLink,this.facebookLink, this.twitterLink, this.twitchLink, this.instagramLink, this.pinterestLink, this.snapchatLink, this.youtubeLink, this.linkedinLink, this.phoneNo, this.workplace,this.linkSharing, this.bio,this.id,this.photoURL,this.username, this.profileURL, this.email, this.displayName, this.tiktokLink});
 
   factory UserProfile.fromDocument(DocumentSnapshot doc){
     return UserProfile(
@@ -55,7 +57,9 @@ class UserProfile{
       fullName: doc.data()["fullName"],
       personalEmail: doc.data()["personalEmail"],
       workEmail: doc.data()["workEmail"],
-      tiktokLink: doc.data()["tiktokLink"]
+      tiktokLink: doc.data()["tiktokLink"],
+      jobTitle: doc.data()["jobTitle"],
+      address: doc.data()["address"]
     );
   }
 }

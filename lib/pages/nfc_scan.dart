@@ -1,9 +1,6 @@
-import 'dart:typed_data';
-
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
 import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
@@ -26,11 +23,9 @@ class _NfcScanState extends State<NfcScan> with WidgetsBindingObserver {
       isBusiness ? businessProfile.profileURL : userProfile.profileURL;
   ValueNotifier<dynamic> result = ValueNotifier(null);
 
-  DateTime _startTime;
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
-    _startTime = DateTime.now();
     super.initState();
   }
 
@@ -47,7 +42,6 @@ class _NfcScanState extends State<NfcScan> with WidgetsBindingObserver {
         // _reportData(DateTime.now().difference(_startTime));
         return;
       case AppLifecycleState.resumed:
-        _startTime = DateTime.now();
         setState(() {});
         return;
       default:

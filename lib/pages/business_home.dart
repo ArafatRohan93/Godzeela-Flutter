@@ -1,12 +1,10 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:godzeela_flutter/components/chips.dart';
-import 'package:godzeela_flutter/components/social_icons.dart';
+import 'package:godzeela_flutter/components/business_card.dart';
 import 'package:godzeela_flutter/components/social_item_tile.dart';
 import 'package:godzeela_flutter/models/business_profile.dart';
-import 'package:godzeela_flutter/pages/edit_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -26,7 +24,7 @@ class _BusinessHomeState extends State<BusinessHome> {
   launchURL(String url) async {
     try {
       if (await canLaunch(url)) {
-        await launch(url, forceWebView: true);
+        await launch(url, forceWebView: false);
       } else {
         throw 'Could not launch $url';
       }
@@ -54,7 +52,7 @@ class _BusinessHomeState extends State<BusinessHome> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(top:8.0,bottom: 8.0,left:32, right:32),
                 child: Container(
                   child: AspectRatio(
                     aspectRatio: 3 / 2,
@@ -62,6 +60,7 @@ class _BusinessHomeState extends State<BusinessHome> {
                       color: Theme.of(context).scaffoldBackgroundColor,
                       width: MediaQuery.of(context).size.width * .7,
                       child: Image(
+                        fit: BoxFit.contain,
                         image: businessProfile.photoURL != null
                             ? CachedNetworkImageProvider(
                                 businessProfile.photoURL)
@@ -77,6 +76,7 @@ class _BusinessHomeState extends State<BusinessHome> {
                       color: Theme.of(context).scaffoldBackgroundColor,
                       width: 2.0,
                     ),
+                    
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.3),
@@ -90,13 +90,15 @@ class _BusinessHomeState extends State<BusinessHome> {
               ),
               Padding(
                 padding: EdgeInsets.all(2.0),
-                child: Text(
-                  "${widget.businessProfile.username}",
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: textFont,
+                child: FittedBox(
+                                  child: Text(
+                    "${widget.businessProfile.username}",
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: textFont,
+                    ),
                   ),
                 ),
               ),
@@ -104,10 +106,10 @@ class _BusinessHomeState extends State<BusinessHome> {
                 icon: Icon(Icons.link_rounded),
                 widget: GestureDetector(
                   onDoubleTap: () => launchURL(
-                      "https://godzeela-flutter.web.app/#/profile/${businessProfile.id}"),
+                      "http://www.godzeela.link/profile.php?id=${businessProfile.id}"),
                   onLongPress: () => copyToClipboard(
-                      "https://godzeela-flutter.web.app/#/profile/${businessProfile.id}"),
-                  child: Text("godzeela-flutter.web.app/#/...",
+                      "http://www.godzeela.link/profile.php?id=${businessProfile.id}"),
+                  child: Text("www.godzeela.link/...",
                       style: TextStyle(
                         fontSize: 15.0,
                         color: Colors.black54,
@@ -117,58 +119,17 @@ class _BusinessHomeState extends State<BusinessHome> {
                       softWrap: true,
                       overflow: TextOverflow.ellipsis),
                 ),
-              ),
-              widget.businessProfile.businessWebsiteLink == '' ||
-                      widget.businessProfile.businessWebsiteLink == null
-                  ? Text(
-                      "",
-                    )
-                  : Chips(
-                    icon: Icon(Icons.open_in_new_outlined),
-                    widget: Text(
-                      "${widget.businessProfile.businessWebsiteLink}",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w300,
-                        fontFamily: textFont,
-                      ),
-                    ),
-                  ),
-              widget.businessProfile.phoneNo == '' ||
-                      widget.businessProfile.phoneNo == null
-                  ? Text(
-                      "",
-                    )
-                  : Chips(
-                    icon: Icon(Icons.phone_android_rounded),
-                    widget: Text(
-                      "${widget.businessProfile.phoneNo}",
-                      style: TextStyle(
-                        fontSize: 15.0,
-                        color: Colors.black54,
-                        fontWeight: FontWeight.w300,
-                        fontFamily: textFont,
-                      ),
-                    ),
-                  ),
-              widget.businessProfile.openingTime == '' ||
-                      widget.businessProfile.openingTime == null
-                  ? Text(
-                      "",
-                    )
-                  : Chips(
-                      icon: Icon(Icons.timer),
-                      widget: Text(
-                        "Opens: ${widget.businessProfile.openingTime}",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: textFont,
-                        ),
-                      ),
-                    ),
+              ), 
+                   Padding(
+                     padding:  EdgeInsets.only(left:32.0,right: 32.0,top:8.0,bottom: 8.0,),
+                     child: BusinessCard(
+                       businessName: widget.businessProfile.businessName,
+                       bio: widget.businessProfile.bio,
+                       websiteLink: widget.businessProfile.businessWebsiteLink,
+                       phoneNo: widget.businessProfile.phoneNo,
+                       openingTime: widget.businessProfile.openingTime
+                     ),
+                   ),
               Padding(
                 padding: EdgeInsets.only(left:20.0,right: 20.0,top:10.0,),
                 child: Row(

@@ -1,13 +1,12 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
-import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/pages/edit_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
 
@@ -24,6 +23,18 @@ class _BuildDrawerState extends State<BuildDrawer> {
  final double iconSize = 35;
  bool toogle = isBusiness ? businessProfile.linkSharing : userProfile.linkSharing;
  String title = isBusiness ? businessProfile.username : userProfile.username;
+
+ launchURL(String url) async {
+    try {
+      if (await canLaunch(url)) {
+        await launch(url, forceWebView: false);
+      } else {
+        throw 'Could not launch $url';
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,8 +174,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
            ),
          ),
          onTap: () {
-           // Update the state of the app.
-           // ...
+           launchURL( "https://www.youtube.com/channel/UCiPZGYibJhVASebsO-KtBNA");
          },
        ),
      ),

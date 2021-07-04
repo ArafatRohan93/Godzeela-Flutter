@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -20,14 +19,25 @@ AppBar buildAppBar(BuildContext context) {
     ),
     actions: [
       Padding(
-          padding: const EdgeInsets.only(right: 15.0, left: 8.0, top: 8.0, bottom: 8.0),
-          child: Badge(
-            // position: BadgePosition.topStart(),
-            // badgeContent: Text('0',style: TextStyle(color: Colors.white),),
-            child: Icon(Icons.notifications_active_outlined,color: Colors.black,size: 25.0,),
-            badgeColor: Colors.red,
-            
-          )),
+        padding: EdgeInsets.all(2.0),
+        child: SizedBox(
+          width: 10.0,
+        ),
+      ),
+      // Padding(
+      //   padding: const EdgeInsets.only(
+      //       right: 15.0, left: 8.0, top: 8.0, bottom: 8.0),
+      //   child: Badge(
+      //     // position: BadgePosition.topStart(),
+      //     // badgeContent: Text('0',style: TextStyle(color: Colors.white),),
+      //     child: Icon(
+      //       Icons.notifications_active_outlined,
+      //       color: Colors.black,
+      //       size: 25.0,
+      //     ),
+      //     badgeColor: Colors.red,
+      //   ),
+      // ),
     ],
   );
 }

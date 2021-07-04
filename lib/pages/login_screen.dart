@@ -38,10 +38,11 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       if (userCredential == null) {
         setState(() {
+          showSpinner = false;
           errorMessage = "Invalid email or password!";
         });
       } else if (userCredential != null) {
-        print(userCredential.user);
+        //print(userCredential.user);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home()));
       }
@@ -51,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } on PlatformException catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       print(e);
@@ -58,15 +60,22 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   signInWithGoogle() async {
+    
     // Trigger the authentication flow
     GoogleSignInAccount googleUser;
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       return null;
+    }
+    if(googleUser != null){
+      setState(() {
+      showSpinner = true;
+    });
     }
 
     // Obtain the auth details from the request
@@ -84,6 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final userCredential =
           await _auth.signInWithCredential(credential).catchError((error) {
         setState(() {
+          showSpinner = false;
           errorMessage = error.code;
         });
       });
@@ -98,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     )));
       } else if (data != null) {
         currentUser = userCredential.user;
-        print(userCredential.user);
+        //print(userCredential.user);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home()));
       }
@@ -107,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       print(e);
@@ -114,10 +125,17 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<Null> signInWithFacebook() async {
+    
     // Trigger the sign-in flow
     final AccessToken result = await FacebookAuth.instance
         .login()
-        .catchError((onError) => print(onError));
+        .catchError((onError) => print(onError.toString()));
+
+        if(result != null){
+          setState(() {
+      showSpinner = true;
+    });
+        }
 
     // Create a credential from the access token
     final FacebookAuthCredential facebookAuthCredential =
@@ -131,6 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
           .signInWithCredential(facebookAuthCredential)
           .catchError((error) {
         setState(() {
+          showSpinner = false;
           errorMessage = error.code;
         });
       });
@@ -146,7 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     )));
       } else if (data != null) {
         currentUser = userCredential.user;
-        print(userCredential.user);
+        //print(userCredential.user);
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => Home()));
       }
@@ -155,6 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     } catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       print(e);

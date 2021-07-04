@@ -7,12 +7,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:677509161835:android:5b6d8343faeac58227a22e",
+        "mobilesdk_app_id": "1:677509161835:android:05b2e529b8eefdc027a22e",
         "android_client_info": {
-          "package_name": "com.rohanarafat.godzeela_flutter"
+          "package_name": "com.cookietech.nfc.godzeela"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "677509161835-2v3ai6nvvm5ci5bber31ive2so4qj6os.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cookietech.nfc.godzeela",
+            "certificate_hash": "17b82ebe61314f0a7b302d9d0c3d912f93737093"
+          }
+        },
         {
           "client_id": "677509161835-cvj72d4d0n51lbd3lmgeh1je452h162p.apps.googleusercontent.com",
           "client_type": 3

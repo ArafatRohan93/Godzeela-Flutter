@@ -1,12 +1,12 @@
 import 'dart:async';
 
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:godzeela_flutter/components/connection_check.dart';
 import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/pages/home.dart';
-import 'package:godzeela_flutter/pages/user_home.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class CompleteRegistration extends StatefulWidget {
   final UserCredential userCredential;
@@ -83,7 +83,7 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                               onChanged: (AccountType value) {
                                 setState(() {
                                   accountType = value;
-                                  print(accountType.toString());
+                                  //print(accountType.toString());
                                 });
                               },
                             ),
@@ -134,6 +134,9 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                                 } else if (val.length <= 3) {
                                   return ("Username too short");
                                 }
+                                else if (val.length >= 12) {
+                                  return ("Username too long");
+                                }
                                 return null;
                               },
                               onChanged: (value) {
@@ -152,77 +155,90 @@ class _CompleteRegistrationState extends State<CompleteRegistration> {
                         SizedBox(
                           height: 20.0,
                         ),
-                        // Row(
-                        //   children: [
-                        //     Expanded(
-                        //       child: Padding(
-                        //         padding: const EdgeInsets.all(2.0),
-                        //         child: Center(
-                        //           child: Text(
-                        //             'godzeela.com/$username1',
-                        //             style: TextStyle(color: Colors.black),
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                         SizedBox(
                           height: 20.0,
                         ),
                         Padding(
                           padding: EdgeInsets.all(15.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              if (username1.length >= 3) {
-                                try {
-                                  usersRef
-                                      .doc(widget.userCredential.user.uid)
-                                      .set({
-                                    'id': widget.userCredential.user.uid,
-                                    'email': widget.userCredential.user.email,
-                                    'username': username1,
-                                    'photoURL':
-                                        widget.userCredential.user.photoURL,
-                                    'displayname':
-                                        widget.userCredential.user.displayName,
-                                    'profileURL': "godzeela.com/$username1",
-                                    'linkSharing': true,
-                                    'timestamp': timestamp,
-                                    'accountType': acc[accountType.index],
-                                    'profileURL' : "https://godzeela-flutter.web.app/#/profile/${widget.userCredential.user.uid}",
-                                  });
-                                  setState(() {
-                                    currentUser = widget.userCredential.user;
-                                    SnackBar snackBar = SnackBar(
-                                      content: Text("Registration Complete!"),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                    Timer(Duration(seconds: 2), () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Home()));
+                            onPressed: () async {
+                              var connectivityResult =
+                                  await (Connectivity().checkConnectivity());
+                              if (connectivityResult ==
+                                  ConnectivityResult.none) {
+                                SnackBar snackBar = SnackBar(
+                                  duration: Duration(days: 1),
+                                  content: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text("No Internet!"),
+                                      TextButton(
+                                        onPressed: () {
+                                          checkConnectivity(context);
+                                          ScaffoldMessenger.of(context)
+                                              .hideCurrentSnackBar();
+                                        },
+                                        child: Text(
+                                          "Retry",
+                                          style: TextStyle(color: Colors.blue),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              } else {
+                                if (username1.length >= 3) {
+                                  try {
+                                    usersRef
+                                        .doc(widget.userCredential.user.uid)
+                                        .set({
+                                      'id': widget.userCredential.user.uid,
+                                      'email': widget.userCredential.user.email,
+                                      'username': username1,
+                                      'photoURL':
+                                          widget.userCredential.user.photoURL,
+                                      'displayname': widget
+                                          .userCredential.user.displayName,
+                                      'linkSharing': true,
+                                      'timestamp': timestamp,
+                                      'accountType': acc[accountType.index],
+                                      'profileURL':
+                                          "http://www.godzeela.link/profile.php?id=${widget.userCredential.user.uid}",
                                     });
-                                  });
-                                } catch (e) {
-                                  print(e);
-                                }
-                              }
-                              else{
-                               SnackBar snackBar = SnackBar(
-                                      content: Text("Username is not valid!"),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                    // Timer(Duration(seconds: 2), () {
-                                    //   Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) => Home()));
-                                    // });
+                                    setState(() {
+                                      currentUser = widget.userCredential.user;
+                                      SnackBar snackBar = SnackBar(
+                                        content: Text("Registration Complete!"),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      Timer(Duration(seconds: 2), () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Home()));
+                                      });
+                                    });
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                } else {
+                                  SnackBar snackBar = SnackBar(
+                                    content: Text("Username is not valid!"),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                  // Timer(Duration(seconds: 2), () {
+                                  //   Navigator.push(
+                                  //       context,
+                                  //       MaterialPageRoute(
+                                  //           builder: (context) => Home()));
+                                  // });
 
+                                }
                               }
                             },
                             child: Text(

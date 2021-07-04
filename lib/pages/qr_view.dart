@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/pages/home.dart';
-import 'package:godzeela_flutter/pages/home.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:async';
 import 'dart:ui';
 
 class QRView extends StatefulWidget {

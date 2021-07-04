@@ -5,19 +5,17 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:godzeela_flutter/components/appBar.dart';
+import 'package:godzeela_flutter/components/connection_check.dart';
 import 'package:godzeela_flutter/components/drawer.dart';
 import 'package:godzeela_flutter/components/drawer_icons_icons.dart';
 import 'package:godzeela_flutter/components/nfc_icon_icons.dart';
-import 'package:godzeela_flutter/components/progress.dart';
 import 'package:godzeela_flutter/components/q_r_icon_icons.dart';
 import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
 import 'package:godzeela_flutter/pages/business_home.dart';
 import 'package:godzeela_flutter/pages/login_screen.dart';
 import 'package:godzeela_flutter/pages/nfc_scan.dart';
-import 'package:godzeela_flutter/pages/nfc_sharing.dart';
 import 'package:godzeela_flutter/pages/qr_view.dart';
 import 'package:godzeela_flutter/pages/user_home.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -50,35 +48,23 @@ class _HomeState extends State<Home> {
   bool sharingStatus = true;
   bool isAuth = false;
   bool isLoading = false;
-  FlutterNfcReader flutterNfcReader = FlutterNfcReader(); 
-
-  //NFCAvailability available;
-
-  // checkNFCAvailability() async {
-  //   available = await FlutterNfcReader.checkNFCAvailability();
-  //   print("NFC AVAILABILTY : ${available.toString()}");
-  //   setState(() {});
-  // }
-
-
+  var subscription;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     PaintingBinding.instance.imageCache.clear();
+    checkConnectivity(context);
+    //subscription = connectionChangeListener(context);
     getCurrentUserData();
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   checkNFCAvailability();
-    // });
-
-    //writerController.text = 'Flutter NFC Scan';
-    // print("onTagDiscovered: \n");
-    // FlutterNfcReader.onTagDiscovered().listen((onData) {
-    //   print(onData.status);
-    //   print(onData.id);
-    //   print(onData.content);
-    // });
   }
+
+  @override
+  void dispose() { 
+    //subscription.cancel();
+    super.dispose();
+  }
+
+  
 
   getCurrentUserData() async {
     final user = await _auth.currentUser;
@@ -95,7 +81,7 @@ class _HomeState extends State<Home> {
           businessProfile = BusinessProfile.fromDocument(doc);
         } else {
           userProfile = UserProfile.fromDocument(doc);
-          print(userProfile.photoURL);
+          //print(userProfile.photoURL);
         }
       } catch (e) {
         print(e);
@@ -108,7 +94,7 @@ class _HomeState extends State<Home> {
 
   onTap(int pageIndex) {
     // print(pageIndex);
-    print(auth);
+    //print(auth);
     pageController.animateToPage(
       pageIndex,
       duration: Duration(milliseconds: 300),

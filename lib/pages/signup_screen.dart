@@ -35,11 +35,12 @@ class _SignupScreenState extends State<SignupScreen> {
             .createUserWithEmailAndPassword(email: email, password: password)
             .catchError((error) {
           setState(() {
+            showSpinner = false;
             errorMessage = error.code;
           });
         });
         if (userCredential != null) {
-          print(userCredential.user);
+          //print(userCredential.user);
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -53,24 +54,30 @@ class _SignupScreenState extends State<SignupScreen> {
         });
       } on PlatformException catch (e) {
         setState(() {
+          showSpinner = false;
           errorMessage = e.code;
         });
         print(e);
       }
     } else {
       setState(() {
+        showSpinner = false;
         errorMessage = "Passwords did not match!";
       });
     }
   }
 
   signInWithGoogle() async {
+    setState(() {
+      showSpinner = true;
+    });
     // Trigger the authentication flow
     GoogleSignInAccount googleUser;
     try {
       googleUser = await GoogleSignIn().signIn();
     } catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       return null;
@@ -91,12 +98,13 @@ class _SignupScreenState extends State<SignupScreen> {
       final userCredential =
           await _auth.signInWithCredential(credential).catchError((error) {
         setState(() {
+          showSpinner = false;
           errorMessage = error.code;
         });
       });
 
       if (userCredential != null) {
-        print(userCredential.user);
+        //print(userCredential.user);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -109,6 +117,7 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     } catch (e) {
       setState(() {
+        showSpinner = false;
         errorMessage = e.code;
       });
       print(e);
@@ -116,6 +125,9 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   signInWithFacebook() async {
+    setState(() {
+      showSpinner = true;
+    });
     // Trigger the sign-in flow
     final AccessToken result = await FacebookAuth.instance.login();
 
@@ -130,6 +142,7 @@ class _SignupScreenState extends State<SignupScreen> {
           .signInWithCredential(facebookAuthCredential)
           .catchError((error) {
         setState(() {
+          showSpinner = false;
           errorMessage = error.code;
         });
       });
@@ -147,6 +160,7 @@ class _SignupScreenState extends State<SignupScreen> {
         showSpinner = false;
       });
     } catch (e) {
+      showSpinner = false;
       print(e);
     }
   }

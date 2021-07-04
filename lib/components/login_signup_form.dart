@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:godzeela_flutter/components/google_icon.dart';
 import 'package:godzeela_flutter/components/social_icons.dart';
 import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/pages/forgot_password.dart';

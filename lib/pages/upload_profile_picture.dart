@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:godzeela_flutter/components/progress.dart';
+import 'package:godzeela_flutter/components/connection_check.dart';
 import 'package:godzeela_flutter/constants.dart';
 import 'package:godzeela_flutter/models/business_profile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
@@ -12,12 +13,9 @@ import 'package:image/image.dart' as Im;
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
 class UploadProfilePicture extends StatefulWidget {
   UploadProfilePicture();
-  // UploadProfilePicture({@required this.file});
-  // final File file;
 
   @override
   _UploadProfilePictureState createState() => _UploadProfilePictureState();
@@ -29,6 +27,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
   final picker = ImagePicker();
   FocusNode focusSelectImage;
   FocusNode focusUploadImage;
+  var subscription;
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
@@ -37,7 +36,7 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
       if (pickedFile != null) {
         _image = File(pickedFile.path);
       } else {
-        print('No image selected.');
+        //print('No image selected.');
       }
     });
   }
@@ -45,13 +44,17 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
   @override
   void initState() {
     super.initState();
+    //checkConnectivity(context);
+    //subscription = connectionChangeListener(context);
 
     focusSelectImage = FocusNode();
     focusUploadImage = FocusNode();
   }
 
+
   @override
   void dispose() {
+    subscription.cancel();
     focusUploadImage.dispose();
     focusSelectImage.dispose();
     super.dispose();
@@ -126,39 +129,71 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
   }
 
   handleSubmit() async {
-    setState(() {
-      isUploading = true;
-    });
-    File compressedFile = await compressImage();
-    String mediaUrl = await uploadImage(compressedFile);
-
-    updateProfilePhoto(mediaUrl);
-    if (isBusiness) {
-      try {
-        DocumentSnapshot doc = await usersRef.doc(currentUser.uid).get();
-        businessProfile = BusinessProfile.fromDocument(doc);
-      } catch (e) {
-        print(e);
-      }
-      print(businessProfile.photoURL);
-      setState(() {
-        isUploading = false;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      });
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      SnackBar snackBar = SnackBar(
+        //duration: Duration(days: 1),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text("No Internet!"),
+            TextButton(
+              onPressed: () {
+                checkConnectivity(context);
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              },
+              child: Text(
+                "Retry",
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
+          ],
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      try {
-        DocumentSnapshot doc = await usersRef.doc(currentUser.uid).get();
-        userProfile = UserProfile.fromDocument(doc);
-      } catch (e) {
-        print(e);
-      }
-      print(userProfile.photoURL);
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
       setState(() {
-        isUploading = false;
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => Home()));
+        isUploading = true;
       });
+      File compressedFile = await compressImage();
+      String mediaUrl = await uploadImage(compressedFile);
+
+      updateProfilePhoto(mediaUrl);
+      if (isBusiness) {
+        try {
+          DocumentSnapshot doc = await usersRef.doc(businessProfile.id).get();
+          businessProfile = BusinessProfile.fromDocument(doc);
+        } catch (e) {
+          setState(() {
+        isUploading = false;
+      });
+          print(e);
+        }
+        //print(businessProfile.photoURL);
+        setState(() {
+          isUploading = false;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        });
+      } else {
+        try {
+          DocumentSnapshot doc = await usersRef.doc(userProfile.id).get();
+          userProfile = UserProfile.fromDocument(doc);
+        } catch (e) {
+          setState(() {
+        isUploading = false;
+      });
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Problem uploading file!"),));
+          print(e);
+        }
+        // print(userProfile.photoURL);
+        setState(() {
+          isUploading = false;
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Home()));
+        });
+      }
     }
   }
 
@@ -183,19 +218,40 @@ class _UploadProfilePictureState extends State<UploadProfilePicture> {
   }
 
   compressImage() async {
-    final tempDir = await getTemporaryDirectory();
+    if(isBusiness){
+       final tempDir = await getTemporaryDirectory();
+    final path = tempDir.path;
+    Im.Image imageFile = Im.decodeImage(_image.readAsBytesSync());
+    final compressedImageFile = File('$path/img_${businessProfile.id}.jpg')
+      ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
+    return compressedImageFile;
+    }
+    else{
+      final tempDir = await getTemporaryDirectory();
     final path = tempDir.path;
     Im.Image imageFile = Im.decodeImage(_image.readAsBytesSync());
     final compressedImageFile = File('$path/img_${userProfile.id}.jpg')
       ..writeAsBytesSync(Im.encodeJpg(imageFile, quality: 85));
     return compressedImageFile;
+    }
+    
   }
 
   Future<String> uploadImage(imageFile) async {
-    StorageUploadTask uploadTask =
+     if(isBusiness){
+       StorageUploadTask uploadTask =
+        storageRef.child("Image_${businessProfile.id}.jpg").putFile(imageFile);
+    StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
+     }
+     else{
+       StorageUploadTask uploadTask =
         storageRef.child("Image_${userProfile.id}.jpg").putFile(imageFile);
     StorageTaskSnapshot storageSnap = await uploadTask.onComplete;
     String downloadUrl = await storageSnap.ref.getDownloadURL();
     return downloadUrl;
+     }
+    
   }
 }

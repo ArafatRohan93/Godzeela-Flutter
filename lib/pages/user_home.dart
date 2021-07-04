@@ -1,12 +1,10 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:godzeela_flutter/components/chips.dart';
-import 'package:godzeela_flutter/components/social_icons.dart';
+import 'package:godzeela_flutter/components/profile_card.dart';
 import 'package:godzeela_flutter/components/social_item_tile.dart';
 import 'package:godzeela_flutter/models/user_profile.dart';
-import 'package:godzeela_flutter/pages/edit_profile.dart';
 import 'package:godzeela_flutter/pages/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -27,7 +25,7 @@ class _UserHomeState extends State<UserHome> {
   launchURL(String url) async {
     try {
       if (await canLaunch(url)) {
-        await launch(url, forceWebView: true);
+        await launch(url, forceWebView: false);
       } else {
         throw 'Could not launch $url';
       }
@@ -48,7 +46,6 @@ class _UserHomeState extends State<UserHome> {
 
   @override
   Widget build(BuildContext context) {
-    var isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -71,7 +68,7 @@ class _UserHomeState extends State<UserHome> {
                     shape: BoxShape.circle,
                     border: new Border.all(
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      width: 6.0,
+                      width: 2.0,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -86,13 +83,15 @@ class _UserHomeState extends State<UserHome> {
               ),
               Padding(
                 padding: EdgeInsets.all(2.0),
-                child: Text(
-                  "${widget.userProfile.username}",
-                  style: TextStyle(
-                    fontSize: 35.0,
-                    color: Colors.black54,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: textFont,
+                child: FittedBox(
+                                  child: Text(
+                    "${widget.userProfile.username}",
+                    style: TextStyle(
+                      fontSize: 30.0,
+                      color: Colors.black54,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: textFont,
+                    ),
                   ),
                 ),
               ),
@@ -100,11 +99,11 @@ class _UserHomeState extends State<UserHome> {
                   icon: Icon(Icons.link_rounded),
                   widget: GestureDetector(
                   onDoubleTap: () =>
-                launchURL("https://godzeela-flutter.web.app/#/profile/${userProfile.id}"),
+                launchURL("http://www.godzeela.link/profile.php?id=${userProfile.id}"),
                   onLongPress: () =>
-                copyToClipboard("https://godzeela-flutter.web.app/#/profile/${userProfile.id}"),
+                copyToClipboard("http://www.godzeela.link/profile.php?id=${userProfile.id}"),
                   child: Text(
-                  "godzeela-flutter.web.app/#/...",
+                  "www.godzeela.link/...",
                   style: TextStyle(
                 fontSize: 15.0,
                 color: Colors.black54,
@@ -116,53 +115,15 @@ class _UserHomeState extends State<UserHome> {
                 ),
                 ),
                 ),
-                widget.userProfile.fullName == '' || widget.userProfile.fullName == null
-                   ? Text(
-                 "",
-                    )
-                   :Chips(
-                   icon: Icon(Icons.person),
-                   widget:  Text(
-                 "${widget.userProfile.fullName}",
-                 style: TextStyle(
-              fontSize: 15.0,
-              color: Colors.black54,
-              fontWeight: FontWeight.w300,
-              fontFamily: textFont,
-                 ),
-                    ),
-                 ),
-                   widget.userProfile.phoneNo == '' || widget.userProfile.phoneNo == null
-                    ? Text(
-                   "",
-                 )
-                    : Chips(
-                 icon: Icon(Icons.phone_android_rounded),
-                 widget:    Text(
-                   "${widget.userProfile.phoneNo}",
-                   style: TextStyle(
-                     fontSize: 15.0,
-                     color: Colors.black54,
-                     fontWeight: FontWeight.w300,
-                     fontFamily: textFont,
+                 Padding(
+                     padding:  EdgeInsets.only(left:32.0,right: 32.0,top:8.0,bottom: 8.0,),
+                     child: ProfileCard(
+                       bio: widget.userProfile.bio,
+                       fullName: widget.userProfile.fullName,
+                       phoneNo: widget.userProfile.phoneNo,
+                       email: widget.userProfile.personalEmail,
+                     ),
                    ),
-                 ),
-                    ),
-                widget.userProfile.personalEmail == '' || widget.userProfile.personalEmail == null
-                    ? Text(
-                        "",
-                      ):Chips(
-                  icon: Icon(Icons.email_rounded),
-                  widget:Text(
-                        "${widget.userProfile.personalEmail}",
-                        style: TextStyle(
-                          fontSize: 15.0,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: textFont,
-                        ),
-                      ),
-                ),
               
               Padding(
                 padding:  EdgeInsets.only(top: 10.0, left:20.0, right: 20.0),

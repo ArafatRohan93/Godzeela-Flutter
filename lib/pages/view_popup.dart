@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:godzeela_flutter/pages/edit_profile.dart';
-import 'package:godzeela_flutter/pages/home.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
@@ -19,7 +18,7 @@ class _ViewPopUpState extends State<ViewPopUp> {
   launchURL(String url) async {
     try {
       if (await canLaunch(url)) {
-        await launch(url, forceWebView: true);
+        await launch(url, forceWebView: false);
       } else {
         throw 'Could not launch $url';
       }
@@ -77,7 +76,7 @@ class _ViewPopUpState extends State<ViewPopUp> {
                           padding: const EdgeInsets.all(10.0),
                           child: Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black),
+                              border: Border.all(color: Colors.black54),
                               borderRadius: BorderRadius.circular(15),
                             ),
                             child: Center(
@@ -90,9 +89,9 @@ class _ViewPopUpState extends State<ViewPopUp> {
                                       child: Text(
                                         widget.link,
                                         style: TextStyle(
-                                            color: Colors.black,
+                                            color: Colors.black54,
                                             // fontFamily: 'PassionOne',
-                                            fontSize: 20),
+                                            fontSize: 15),
                                       ),
                                     ),
                                   ),

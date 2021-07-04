@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:godzeela_flutter/pages/home.dart';
 
 const String textFont = "DMSans";
 
