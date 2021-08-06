@@ -8,6 +8,7 @@ The goal of this project is to create an application that allowa user to create 
 * QR code
 * NFC Tag Writing 
 * Direct link sharing
+
 This application is developed for a popular Tag Manufacturing Startup [GODZEELA](https://godzeela.com/?fbclid=IwAR0-0NV9-Oi476VuFoDeiBVkOojJcklzMb3OdKumaKR32SDWVHyiJIDdDSw)
 
 ## Features
